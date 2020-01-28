@@ -1,46 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Table from 'react-bootstrap/Table';
-
-const ALL_STOPS = gql`
-    query {
-        stops {
-            gtfsId
-            name
-            code
-            lat
-            lon
-            zoneId
-        }
-    }
-`
-
-const NEXT_BUSSES = gql`
-    query getStop($idToSearch: String!) {
-        stop(id: $idToSearch) {
-          name
-          gtfsId
-            stoptimesWithoutPatterns {
-            scheduledArrival
-            realtimeArrival
-            arrivalDelay
-            scheduledDeparture
-            realtimeDeparture
-            departureDelay
-            realtime
-            realtimeState
-            serviceDay
-            headsign
-            trip {
-                id
-                routeShortName
-            }
-          }
-        }  
-      }
-`
+import Table from 'react-bootstrap/Table'
+import { ALL_STOPS, NEXTS } from './queries/queries'
 
 function timestamp() {
     const dateTime = new Date().getTime()
@@ -80,12 +42,12 @@ const Nexts = ({ nextstops }) => {
     )
 }
 
-const Stop = ({ name, code, gtfsId, client }) => {
-    const { loading, error, data } = useQuery(NEXT_BUSSES, {
+const Stop = ({ name, code, gtfsId }) => {
+    const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
     });
     if (loading) return <tr><td>Loading...</td></tr>
-    else if (error) return <tr><td>Error :(</td></tr>
+    else if (error) return <tr><td>Error, NEXTS query returns error.</td></tr>
     return (
         <tr key={gtfsId}>
             <td>{code}</td>
@@ -101,7 +63,7 @@ const Stop = ({ name, code, gtfsId, client }) => {
     )
 }
 
-const App = ({ client }) => {
+const App = () => {
     const { loading, error, data } = useQuery(ALL_STOPS)
 
     const [findStopForm, setFindStopForm] = useState([])
@@ -123,7 +85,7 @@ const App = ({ client }) => {
     }
 
     if (loading) return <p>Loading...</p>
-    else if (error) return <p>Error :(</p>
+    else if (error) return <p>Error, ALL_STOPS query returns error.</p>
 
     return (
         <div class="container">
@@ -140,7 +102,6 @@ const App = ({ client }) => {
                             code={stop.code}
                             gtfsId={stop.gtfsId}
                             key={stop.gtfsId}
-                            client={client}
                         />
                     ))
                     }
