@@ -1,6 +1,6 @@
 {
-  "name": "checkpoint",
-  "version": "0.1.0",
+  "name": "Jumptonext",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "apollo-boost": "^0.4.7",
