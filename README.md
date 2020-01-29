@@ -1,4 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Jumptonext
+
+[![CircleCI](https://circleci.com/gh/Robustic/Jumptonext.svg?style=svg)](https://circleci.com/gh/Robustic/Jumptonext)
+
+[Jumptonext in Heroku](https://jumptonext.herokuapp.com/)
 
 ## Available Scripts
 
