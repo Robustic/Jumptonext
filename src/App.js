@@ -88,7 +88,7 @@ const App = () => {
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
 
     return (
-        <div class="container">
+        <div className='container'>
             <h3>Pysäkit</h3>
             <input
                 value={findStopForm}

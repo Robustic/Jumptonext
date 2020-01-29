@@ -1,8 +1,7 @@
 import React from "react"
 import { MockedProvider } from "@apollo/react-testing"
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, act } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom'
-import flushPromises from 'flush-promises'
 import wait from "waait"
 import App from './App'
 import { ALL_STOPS, NEXTS } from './queries/queries'
@@ -80,20 +79,26 @@ const mock_NEXTS =
   }
 };
 
+describe('and the component is loading', () => {
+  it("should render without error", async () => {
+    const component = render(
+      <MockedProvider mocks={[mock_ALL_STOPS, mock_NEXTS]} addTypename={false}>
+        <App />
+      </MockedProvider>
+    )
 
-it("should render without error", async () => {
-  const component = render(
-    <MockedProvider mocks={[mock_ALL_STOPS, mock_NEXTS]} addTypename={false}>
-      <App />
-    </MockedProvider>
-  )
+    act(() => {
+      expect(component.container).toHaveTextContent(
+        'Loading...'
+      )
+    })
 
-  expect(component.container).toHaveTextContent(
-    'Loading...'
-  )
-  await wait(0)
-  expect(component.container).toHaveTextContent(
-    'Pysäkit'
-  )
-
+    await act(async () => {
+      await wait(0)
+      expect(component.container).toHaveTextContent(
+        'Pysäkit'
+      )
+    })
+  })
 })
+
