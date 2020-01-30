@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import '../index.css'
 import { ALL_STOPS, NEXTS } from '../queries/queries'
 
 function timestamp() {
@@ -22,21 +23,24 @@ function timeleft(timeleft) {
     const minutes = Math.floor(timeleftAfterHours / 60)
     const timeleftAfterMinutes = timeleftAfterHours - minutes * 60
     const seconds = timeleftAfterMinutes
-    if (hours < 0) {
-        console.log("timeleft: " + timeleft)
-        console.log("hours: " + hours)
-        console.log("minutes: " + minutes)
-        console.log("seconds: " + seconds)
-    }
+    // if (hours < 0) {
+    //     console.log("timeleft: " + timeleft)
+    //     console.log("hours: " + hours)
+    //     console.log("minutes: " + minutes)
+    //     console.log("seconds: " + seconds)
+    // }
     if (hours === 0 && minutes === 0) return seconds + "s"
     if (hours === 0) return minutes + "m " + seconds + "s"
     return hours + "h " + minutes + "m " + seconds + "s"
 }
 
-const NextForLine = ({ routeShortName, realtimeArrival, currentTimestamp }) => {
+const NextForLine = ({ routeShortName, realtimeArrival, currentTimestamp, headsign }) => {
     return (
         <>
-            <>{routeShortName}- {timeleft(realtimeArrival - currentTimestamp)},{' '}</>
+            <p className='busstylebold'>{routeShortName}{' '}</p>
+            <p className='busstyle'>{headsign}</p>
+            <p className='realtimestyle'> {timeleft(realtimeArrival - currentTimestamp)}</p>
+            <p className='black'>{' ; '}</p>
         </>
     )
 }
@@ -54,6 +58,7 @@ const NextsForLine = ({ nextstops, currentTimestamp }) => {
                     routeShortName={next.trip.routeShortName}
                     realtimeArrival={next.realtimeArrival}
                     currentTimestamp={currentTimestamp}
+                    headsign={next.headsign}
                 />
             ))
             }
@@ -72,12 +77,12 @@ const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     else if (error) return <tr><td>Error, NEXTS query returns error.</td></tr>
     return (
         <tr key={gtfsId}>
-            <td width={'60px'}>
+            <td width={'70px'}>
                 <Button variant="primary" size="sm" onClick={setStopFunction}>
                     {code}
                 </Button>
             </td>
-            <td width={'20%'}>{name}</td>
+            <td className='busstylewithendline' width={'20%'}>{name}</td>
             <td>
                 <NextsForLine
                     nextstops={data.stop.stoptimesWithoutPatterns}
@@ -89,11 +94,12 @@ const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     )
 }
 
-const Next = ({ routeShortName, scheduledArrival, currentTimestamp }) => {
+const Next = ({ routeShortName, realtimeArrival, currentTimestamp, headsign }) => {
     return (
         <tr>
-            <td>{routeShortName}</td>
-            <td>{timeleft(scheduledArrival - currentTimestamp)}</td>
+            <td className='busstylewithendlinebold' width={'50px'}>{routeShortName}</td>
+            <td className='busstylewithendline' width={'40%'}>{headsign}</td>
+            <td className='realtimestylewithendline'>{timeleft(realtimeArrival - currentTimestamp)}</td>
         </tr>
     )
 }
@@ -111,8 +117,9 @@ const Nexts = ({ nexttimes, currentTimestamp }) => {
                     <Next
                         key={next.trip.id}
                         routeShortName={next.trip.routeShortName}
-                        scheduledArrival={next.scheduledArrival}
+                        realtimeArrival={next.realtimeArrival}
                         currentTimestamp={currentTimestamp}
+                        headsign={next.headsign}
                     />
                 ))
                 }
@@ -124,7 +131,7 @@ const Nexts = ({ nexttimes, currentTimestamp }) => {
 const Stop = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
-        pollInterval: 10000
+        pollInterval: 20000
     })
 
     if (loading) return <p>Loading...</p>

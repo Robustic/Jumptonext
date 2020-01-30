@@ -3,7 +3,7 @@ import { MockedProvider } from "@apollo/react-testing"
 import { render, fireEvent, act } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom'
 import wait from "waait"
-import StopSearch from './StopSearch'
+import StopSearch from '../components/StopSearch'
 
 import { ALL_STOPS, NEXTS } from '../queries/queries'
 

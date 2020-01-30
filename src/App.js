@@ -8,7 +8,7 @@ const client = new ApolloClient({
 })
 
 const App = () => {
-    return (
+    return (        
         <ApolloProvider client={client} >
             <StopSearch />
         </ApolloProvider> 

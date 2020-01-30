@@ -1,0 +1,27 @@
+.busstylebold {
+    display: inline;
+    color: #007AC9;
+    font-weight: bold;
+}
+.busstyle {
+    display: inline;
+    color: #007AC9;
+}
+.busstylewithendlinebold {
+    color: #007AC9;
+    font-weight: bold;
+}
+.busstylewithendline {
+    color: #007AC9;
+}
+.realtimestyle {
+    display: inline;
+    color: green;
+}
+.realtimestylewithendline {
+    color: green;
+}
+.black {
+    display: inline;
+    color: gray;
+}
