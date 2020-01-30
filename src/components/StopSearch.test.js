@@ -56,6 +56,7 @@ const mock_NEXTS =
         stop: {
           name: 'Louhosmäki',
           gtfsId: 'HSL:6150219',
+          code: 'Ki1519',
           stoptimesWithoutPatterns: [
             {
               scheduledArrival: 56160,

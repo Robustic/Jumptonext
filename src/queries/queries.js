@@ -18,6 +18,7 @@ export const NEXTS = gql`
         stop(id: $idToSearch) {
           name
           gtfsId
+          code
             stoptimesWithoutPatterns {
             scheduledArrival
             realtimeArrival
