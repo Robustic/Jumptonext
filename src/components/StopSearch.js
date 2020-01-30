@@ -22,21 +22,26 @@ function timeleft(timeleft) {
     const minutes = Math.floor(timeleftAfterHours / 60)
     const timeleftAfterMinutes = timeleftAfterHours - minutes * 60
     const seconds = timeleftAfterMinutes
+    if (hours < 0) {
+        console.log("timeleft: " + timeleft)
+        console.log("hours: " + hours)
+        console.log("minutes: " + minutes)
+        console.log("seconds: " + seconds)
+    }
     if (hours === 0 && minutes === 0) return seconds + "s"
     if (hours === 0) return minutes + "m " + seconds + "s"
     return hours + "h " + minutes + "m " + seconds + "s"
 }
 
-const NextForLine = ({ routeShortName, scheduledArrival, currentTimestamp }) => {
+const NextForLine = ({ routeShortName, realtimeArrival, currentTimestamp }) => {
     return (
         <>
-            <>{routeShortName}- {timeleft(scheduledArrival - currentTimestamp)},{' '}</>
+            <>{routeShortName}- {timeleft(realtimeArrival - currentTimestamp)},{' '}</>
         </>
     )
 }
 
-const NextsForLine = ({ nextstops }) => {
-    const currentTimestamp = timestamp()
+const NextsForLine = ({ nextstops, currentTimestamp }) => {
     const nextToView = nextstops
         .sort()
         .filter(next => (next.realtimeArrival && next.realtimeArrival > currentTimestamp))
@@ -47,7 +52,7 @@ const NextsForLine = ({ nextstops }) => {
                 <NextForLine
                     key={next.trip.id}
                     routeShortName={next.trip.routeShortName}
-                    scheduledArrival={next.scheduledArrival}
+                    realtimeArrival={next.realtimeArrival}
                     currentTimestamp={currentTimestamp}
                 />
             ))
@@ -56,28 +61,28 @@ const NextsForLine = ({ nextstops }) => {
     )
 }
 
-const StopLine = ({ name, code, gtfsId, setStop }) => {
+const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     const { loading, error, data } = useQuery(NEXTS, {
-        variables: { idToSearch: gtfsId },
+        variables: { idToSearch: gtfsId }
     })
     const setStopFunction = () => {
-        console.log(gtfsId)
         setStop(gtfsId)
     }
     if (loading) return <tr><td>Loading...</td></tr>
     else if (error) return <tr><td>Error, NEXTS query returns error.</td></tr>
     return (
         <tr key={gtfsId}>
-            <td width={'15%'}>
+            <td width={'60px'}>
                 <Button variant="primary" size="sm" onClick={setStopFunction}>
                     {code}
                 </Button>
             </td>
-            <td width={'35%'}>{name}</td>
-            <td width={'50%'}>
+            <td width={'20%'}>{name}</td>
+            <td>
                 <NextsForLine
                     nextstops={data.stop.stoptimesWithoutPatterns}
                     key={data.stop.gtfsId}
+                    currentTimestamp={currentTimestamp}
                 />
             </td>
         </tr>
@@ -93,8 +98,8 @@ const Next = ({ routeShortName, scheduledArrival, currentTimestamp }) => {
     )
 }
 
-const Nexts = ({ nexttimes }) => {
-    const currentTimestamp = timestamp()
+const Nexts = ({ nexttimes, currentTimestamp }) => {
+
     const nextToView = nexttimes
         .sort()
         .filter(next => (next.realtimeArrival && next.realtimeArrival > currentTimestamp))
@@ -116,21 +121,24 @@ const Nexts = ({ nexttimes }) => {
     )
 }
 
-const Stop = ({ gtfsId, clearStopFunction }) => {
+const Stop = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
+        pollInterval: 10000
     })
+
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
     return (
         <>
-            <h4>{data.stop.code} Ohoi {data.stop.name}</h4>
+            <h4>{data.stop.code} {data.stop.name}</h4>
             <Button variant="primary" onClick={clearStopFunction}>
                 Reselect stop
             </Button>
             <Nexts
                 key={gtfsId}
                 nexttimes={data.stop.stoptimesWithoutPatterns}
+                currentTimestamp={currentTimestamp}
             />
         </>
     )
@@ -147,7 +155,7 @@ const StopSearch = () => {
         const written = event.target.value
         const str = written.toLowerCase()
         const filteredStops = data.stops
-            .filter(stop => stop.name.toLowerCase().includes(str) || (stop.code && stop.code.includes(str)))
+            .filter(stop => stop.name.toLowerCase().includes(str) || (stop.code && stop.code.toLowerCase().includes(str)))
             .sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
                 if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
@@ -162,6 +170,12 @@ const StopSearch = () => {
         setSelectedStop(stopId)
     }
 
+    const [currentTimestamp, setcurrentTimestamp] = useState(0)
+    setTimeout(
+        () => setcurrentTimestamp(timestamp()),
+        1000
+    )
+
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
 
@@ -175,12 +189,14 @@ const StopSearch = () => {
                     key={selectedStop}
                     gtfsId={selectedStop}
                     clearStopFunction={clearStopFunction}
+                    currentTimestamp={currentTimestamp}
                 />
             </div>
         )
     } else {
         return (
             <div className='container'>
+                
                 <h3>Pysäkit</h3>
                 <input
                     value={findStopForm}
@@ -195,6 +211,7 @@ const StopSearch = () => {
                                 code={stop.code}
                                 gtfsId={stop.gtfsId}
                                 setStop={setStop}
+                                currentTimestamp={currentTimestamp}
                             />
                         ))
                         }
