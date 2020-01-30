@@ -3,8 +3,9 @@ import { MockedProvider } from "@apollo/react-testing"
 import { render, fireEvent, act } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom'
 import wait from "waait"
-import App from './App'
-import { ALL_STOPS, NEXTS } from './queries/queries'
+import StopSearch from './StopSearch'
+
+import { ALL_STOPS, NEXTS } from '../queries/queries'
 
 const mock_ALL_STOPS =
 {
@@ -83,7 +84,7 @@ describe('and the component is loading', () => {
   it("should render without error", async () => {
     const component = render(
       <MockedProvider mocks={[mock_ALL_STOPS, mock_NEXTS]} addTypename={false}>
-        <App />
+        <StopSearch />
       </MockedProvider>
     )
 

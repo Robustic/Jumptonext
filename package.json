@@ -17,6 +17,7 @@
   },
   "scripts": {
     "start": "node server.js",
+    "try": "react-scripts start",
     "build": "react-scripts build --prod",
     "deploy": "git push heroku master",
     "logs:prod": "heroku logs --tail",
