@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import { ALL_STOPS, NEXTS } from '../queries/queries'
-import MapWithAMarker from './MapWithAMarker'
 
 function timestamp() {
     const dateTime = new Date().getTime()
@@ -204,7 +203,6 @@ const StopSearch = () => {
     } else {
         return (
             <div className='container'>
-                <MapWithAMarker />
                 <h3>Pysäkit</h3>
                 <input
                     value={findStopForm}
