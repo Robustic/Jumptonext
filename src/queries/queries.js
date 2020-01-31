@@ -19,6 +19,8 @@ export const NEXTS = gql`
           name
           gtfsId
           code
+          lat
+          lon
             stoptimesWithoutPatterns {
             scheduledArrival
             realtimeArrival

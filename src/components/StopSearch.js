@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
+import Map from './Map'
+import L from 'leaflet';
 import { ALL_STOPS, NEXTS } from '../queries/queries'
 
 function timestamp() {
@@ -71,7 +73,7 @@ const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
         variables: { idToSearch: gtfsId }
     })
     const setStopFunction = () => {
-        setStop(gtfsId)
+        setStop(gtfsId, data.stop.lat, data.stop.lon)
     }
     if (loading) return <tr><td>Loading...</td></tr>
     else if (error) return <tr><td>Error, NEXTS query returns error.</td></tr>
@@ -83,6 +85,7 @@ const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
                 </Button>
             </td>
             <td className='busstylewithendline' width={'20%'}>{name}</td>
+            <td className='busstylewithendline' width={'20%'}>{gtfsId}</td>
             <td>
                 <NextsForLine
                     nextstops={data.stop.stoptimesWithoutPatterns}
@@ -138,10 +141,18 @@ const Stop = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
     return (
         <>
-            <h4>{data.stop.code} {data.stop.name}</h4>
-            <Button variant="primary" onClick={clearStopFunction}>
-                Reselect stop
-            </Button>
+            <Table striped>
+                <tbody>
+                    <tr>
+                        <td className='mainheader' >{data.stop.code} {data.stop.name}</td>
+                        <td>
+                            <Button variant="primary" onClick={clearStopFunction}>
+                                Reselect stop
+                            </Button>
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
             <Nexts
                 key={gtfsId}
                 nexttimes={data.stop.stoptimesWithoutPatterns}
@@ -158,6 +169,9 @@ const StopSearch = () => {
     const [findStop, setFindStop] = useState([])
     const [selectedStop, setSelectedStop] = useState()
 
+    const [x, setX] = useState(60.171298)
+    const [y, setY] = useState(24.941671)
+
     const handleFindStopChange = (event) => {
         const written = event.target.value
         const str = written.toLowerCase()
@@ -173,7 +187,11 @@ const StopSearch = () => {
         setFindStopForm(written)
     }
 
-    const setStop = (stopId) => {
+    const setStop = (stopId, newx, newy) => {
+        if (stopId && newx && newy) {
+            setX(newx)
+            setY(newy)
+        }
         setSelectedStop(stopId)
     }
 
@@ -182,6 +200,7 @@ const StopSearch = () => {
         () => setcurrentTimestamp(timestamp()),
         1000
     )
+
 
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
@@ -192,6 +211,7 @@ const StopSearch = () => {
         }
         return (
             <div className='container'>
+                <Map coord={[x, y]} />
                 <Stop
                     key={selectedStop}
                     gtfsId={selectedStop}
@@ -203,7 +223,8 @@ const StopSearch = () => {
     } else {
         return (
             <div className='container'>
-                <h3>Pysäkit</h3>
+                <Map coord={[x, y]} />
+                <h5>Find stop to jump to the next</h5>
                 <input
                     value={findStopForm}
                     onChange={handleFindStopChange}

@@ -25,3 +25,16 @@
     display: inline;
     color: gray;
 }
+.leaflet-container {
+    height: 400px;
+    width: 800px;
+}
+.mainheader {
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+    color: #007AC9;
+}

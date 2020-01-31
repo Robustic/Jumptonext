@@ -98,7 +98,7 @@ describe('and the component is loading', () => {
     await act(async () => {
       await wait(0)
       expect(component.container).toHaveTextContent(
-        'Pysäkit'
+        'Find stop to jump to the next'
       )
     })
   })
