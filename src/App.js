@@ -8,10 +8,14 @@ const client = new ApolloClient({
 })
 
 const App = () => {
-    return (        
-        <ApolloProvider client={client} >
-            <StopSearch />
-        </ApolloProvider> 
+    return (
+        <main>
+            <section className="container">
+                <ApolloProvider client={client} >
+                    <StopSearch />
+                </ApolloProvider>
+            </section>
+        </main>
     )
 }
 

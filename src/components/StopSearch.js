@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import Map from './Map'
-import L from 'leaflet';
 import { ALL_STOPS, NEXTS } from '../queries/queries'
 
 function timestamp() {
@@ -25,12 +26,6 @@ function timeleft(timeleft) {
     const minutes = Math.floor(timeleftAfterHours / 60)
     const timeleftAfterMinutes = timeleftAfterHours - minutes * 60
     const seconds = timeleftAfterMinutes
-    // if (hours < 0) {
-    //     console.log("timeleft: " + timeleft)
-    //     console.log("hours: " + hours)
-    //     console.log("minutes: " + minutes)
-    //     console.log("seconds: " + seconds)
-    // }
     if (hours === 0 && minutes === 0) return seconds + "s"
     if (hours === 0) return minutes + "m " + seconds + "s"
     return hours + "h " + minutes + "m " + seconds + "s"
@@ -79,13 +74,12 @@ const StopLine = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     else if (error) return <tr><td>Error, NEXTS query returns error.</td></tr>
     return (
         <tr key={gtfsId}>
-            <td width={'70px'}>
+            <td>
                 <Button variant="primary" size="sm" onClick={setStopFunction}>
                     {code}
                 </Button>
             </td>
-            <td className='busstylewithendline' width={'20%'}>{name}</td>
-            <td className='busstylewithendline' width={'20%'}>{gtfsId}</td>
+            <td className='busstylewithendline'>{name}</td>
             <td>
                 <NextsForLine
                     nextstops={data.stop.stoptimesWithoutPatterns}
@@ -114,7 +108,14 @@ const Nexts = ({ nexttimes, currentTimestamp }) => {
         .filter(next => (next.realtimeArrival && next.realtimeArrival > currentTimestamp))
 
     return (
-        <Table striped>
+        <Table bordered size="sm">
+            <thead>
+                    <tr>
+                        <th className='tableheaderwithendlinebold' width={'70px'}>Line</th>
+                        <th className='tableheaderwithendlinebold' width={'40%'}>Line name</th>
+                        <th className='tableheaderwithendlinebold'>Estimated time left</th>
+                    </tr>
+                </thead>
             <tbody>
                 {nextToView.map(next => (
                     <Next
@@ -141,7 +142,7 @@ const Stop = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
     else if (error) return <p>Error, ALL_STOPS query returns error.</p>
     return (
         <>
-            <Table striped>
+            <Table>                
                 <tbody>
                     <tr>
                         <td className='mainheader' >{data.stop.code} {data.stop.name}</td>
@@ -160,6 +161,23 @@ const Stop = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
             />
         </>
     )
+}
+
+const Showtable = ({ findStop, setStop, currentTimestamp, findStopForm }) => {
+    if (findStopForm.length > 0) {
+        return (
+            findStop.map(stop => (
+                <StopLine
+                    key={stop.gtfsId}
+                    name={stop.name}
+                    code={stop.code}
+                    gtfsId={stop.gtfsId}
+                    setStop={setStop}
+                    currentTimestamp={currentTimestamp}
+                />
+            ))
+        )
+    } else return <tr><td className='tableheaderwithendlinebold'>-</td><td className='tableheaderwithendlinebold'>No entries</td><td></td></tr>
 }
 
 const StopSearch = () => {
@@ -222,29 +240,46 @@ const StopSearch = () => {
         )
     } else {
         return (
-            <div className='container'>
-                <Map coord={[x, y]} />
-                <h5>Find stop to jump to the next</h5>
-                <input
-                    value={findStopForm}
-                    onChange={handleFindStopChange}
+            <>
+                <Map
+                    coord={[x, y]}
                 />
-                <Table striped>
-                    <tbody>
-                        {findStop.map(stop => (
-                            <StopLine
-                                key={stop.gtfsId}
-                                name={stop.name}
-                                code={stop.code}
-                                gtfsId={stop.gtfsId}
+                <h5>Find stop to jump to the next</h5>
+                <Form>
+                    <Form.Group>
+                        <InputGroup
+                            value={findStopForm}
+                            onChange={handleFindStopChange}
+                        >
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="inputSearchPrepend">Search</InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control
+                                type="text"
+                                placeholder="Example: &quot;Vallilan varikko&quot;, &quot;3024, &quot;E4114&quot;..." />
+                        </InputGroup>
+                    </Form.Group>
+                </Form>
+                <div>
+                    <Table bordered size="sm">
+                        <thead>
+                            <tr>
+                                <th className='tableheaderwithendlinebold' width={'70px'}>Stop</th>
+                                <th className='tableheaderwithendlinebold' width={'20%'}>Stop name</th>
+                                <th className='tableheaderwithendlinebold'>Line code, Line name, Estimated time left</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Showtable
+                                findStopForm={findStopForm}
+                                findStop={findStop}
                                 setStop={setStop}
                                 currentTimestamp={currentTimestamp}
-                            />
-                        ))
-                        }
-                    </tbody>
-                </Table>
-            </div>
+                            ></Showtable>
+                        </tbody>
+                    </Table>
+                </div >
+            </>
         )
     }
 }

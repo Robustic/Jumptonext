@@ -19,6 +19,7 @@ class Map extends React.Component {
       >
         <TileLayer
           url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={this.props.coord}>
           <Popup>
