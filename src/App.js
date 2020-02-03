@@ -10,11 +10,9 @@ const client = new ApolloClient({
 const App = () => {
     return (
         <main>
-            <section className="container">
-                <ApolloProvider client={client} >
-                    <StopSearch />
-                </ApolloProvider>
-            </section>
+            <ApolloProvider client={client} >
+                <StopSearch />
+            </ApolloProvider>
         </main>
     )
 }

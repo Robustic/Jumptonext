@@ -18,20 +18,22 @@ const mock_ALL_STOPS =
       data: {
         stops: [
           {
-            gtfsId: 'HSL:6150219',
-            name: 'Louhosmäki',
-            lat: 60.202282,
-            lon: 24.358088,
-            code: 'Ki1519',
-            zoneId: 'D',
+            gtfsId: "HSL: 6150221",
+        name: "Louhosmäki",
+            lat: 60.20219,
+            lon: 24.35642,
+            code: "Ki1521",
+            zoneId: "D",
+            vehicleType: 3
           },
           {
-            gtfsId: 'HSL:6150219',
-            name: 'Louhosmäki',
-            lat: 60.202282,
-            lon: 24.358088,
-            code: 'Ki1519',
-            zoneId: 'D',
+            gtfsId: "HSL:1310602",
+            name: "Lauttasaari",
+            lat: 60.159443,
+            lon: 24.8785,
+            code: "0012",
+            zoneId: "A",
+            vehicleType: 1
           },
         ]
       }
@@ -57,6 +59,10 @@ const mock_NEXTS =
           name: 'Louhosmäki',
           gtfsId: 'HSL:6150219',
           code: 'Ki1519',
+          lat: 60.202282,
+          lon: 24.358088,
+          zoneId: "D",
+          vehicleType: 3,
           stoptimesWithoutPatterns: [
             {
               scheduledArrival: 56160,
@@ -97,8 +103,9 @@ describe('and the component is loading', () => {
 
     await act(async () => {
       await wait(0)
+      //component.debug()
       expect(component.container).toHaveTextContent(
-        'Find stop to jump to the next'
+        'Line code, Line name, Estimated time left'
       )
     })
   })
