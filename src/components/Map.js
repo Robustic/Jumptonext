@@ -1,5 +1,6 @@
 import React from 'react'
-import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet'
+import { stopIcon } from './Icon'
 
 class Map extends React.Component {
     constructor(props) {
@@ -21,11 +22,8 @@ class Map extends React.Component {
     handleBoundsChange(newBounds, newZoomLevel) {
         this.state.mapBoundsChanged(newBounds, newZoomLevel)
     }
+
     render() {
-        // if (this.state.currentZoomLevel) {
-        //     window.console.log('this.state.currentZoomLevel ->',
-        //         this.state.currentZoomLevel)
-        // }
         return (
             <LeafletMap
                 ref={m => { this.leafletMap = m }}
@@ -45,15 +43,18 @@ class Map extends React.Component {
                     url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                {this.props.mapMarkers.map(marker => (
-                    <Marker
-                        position={[marker.lat, marker.lon]}
-                        key={marker.gtfsId}>
-                        <Popup>
-                            {marker.code}
-                        </Popup>
-                    </Marker>
-                ))
+                {this.props.mapMarkers
+                    .map(marker => (
+                        <Marker
+                            position={[marker.lat, marker.lon]}
+                            key={marker.gtfsId}
+                            icon={stopIcon(marker.vehicleType)}
+                        >
+                            <Popup>
+                                {marker.code}
+                            </Popup>
+                        </Marker>
+                    ))
                 }
             </LeafletMap>
         );
