@@ -1,22 +1,9 @@
+.flex-item {
+    justify-content: center;
+  }
 .tableheaderwithendlinebold {
-    color: #505050;
-    font-weight:normal;
-}
-.busstylebold {
-    display: inline;
-    color: #007AC9;
-    font-weight: bold;
-}
-.busstyle {
-    display: inline;
-    color: #007AC9;
-}
-.busstylewithendlinebold {
-    color: #007AC9;
-    font-weight: bold;
-}
-.busstylewithendline {
-    color: #007AC9;
+    color: #404040;
+    font-weight: normal;
 }
 .realtimestyle {
     display: inline;
@@ -32,59 +19,32 @@
 .notrealtimestylewithendline {
     color: #606060;
 }
-.black {
+.semicolon {
     display: inline;
-    color: gray;
-}
-.leaflet-container {
-    height: 400px;
-    width: 800px;
-}
-.mainheader {
-    font-size: 1.17em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
-    color: #007AC9;
+    color: #404040;
 }
 .leaflet-container {
     width: 100%;
     height: 40vh;
 }
-.start {
+.start-view-text {
     font-size: 2em;
     margin-top: 2em;
     margin-bottom: 2em;
-    margin-left: 0;
-    margin-right: 0;
     font-weight: bold;
     color: white;
+    text-align: center;
 }
+.start-view-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 .bg-white {
     background:#ffffff;
 }
 .bg-silver {
     background:#C0C0C0;
-}
-.white {
-    color:#ffffff;
-}
-.color-bus {
-    background-color:#007AC9;
-}
-.color-tram {
-    background-color:#00985F;
-}
-.color-train {
-    background-color:#8C54A2;
-}
-.color-sub {
-    background-color:#FF6319;
-}
-.color-ferry {
-    background-color:#00B9E4;
 }
 .btn-bus {
     background: #007AC9;

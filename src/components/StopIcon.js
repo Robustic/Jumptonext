@@ -18,7 +18,7 @@ function getStopIcon(transportType) {
         case 4:
             return ferrystop
         default:
-            return busstop
+            return ferrystop
     }
 }
 

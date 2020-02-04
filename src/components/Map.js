@@ -1,12 +1,13 @@
 import React from 'react'
-import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet'
-import { stopIcon } from './Icon'
+import { Map as LeafletMap, TileLayer } from 'react-leaflet'
+import MapMarker from './MapMarker'
 
 class Map extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            mapBoundsChanged: this.props.mapBoundsChanged
+            mapBoundsChanged: this.props.mapBoundsChanged,
+            setStop: this.props.setStop
         }
     }
     componentDidMount() {
@@ -45,19 +46,15 @@ class Map extends React.Component {
                 />
                 {this.props.mapMarkers
                     .map(marker => (
-                        <Marker
-                            position={[marker.lat, marker.lon]}
+                        <MapMarker
+                            marker={marker}
+                            setStop={this.props.setStop}
                             key={marker.gtfsId}
-                            icon={stopIcon(marker.vehicleType)}
-                        >
-                            <Popup>
-                                {marker.code}
-                            </Popup>
-                        </Marker>
+                        />
                     ))
                 }
             </LeafletMap>
-        );
+        )
     }
 }
 
