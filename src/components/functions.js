@@ -1,10 +1,8 @@
 export function timestamp() {
-    const dateTime = new Date().getTime()
-    const timestamp = Math.floor(dateTime / 1000)
-    var datetime = new Date(timestamp * 1000)
-    var hours = datetime.getHours()
-    var minutes = datetime.getMinutes()
-    var seconds = datetime.getSeconds()
+    const datetime = new Date()
+    const hours = datetime.getHours()
+    const minutes = datetime.getMinutes()
+    const seconds = datetime.getSeconds()
     const stamp = hours * 60 * 60 + minutes * 60 + seconds
     return stamp
 }

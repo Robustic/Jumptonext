@@ -17,27 +17,27 @@ export const ALL_STOPS = gql`
 export const NEXTS = gql`
     query getStop($idToSearch: String!) {
         stop(id: $idToSearch) {
-          name
-          gtfsId
-          code
-          lat
-          lon
-          zoneId
-          vehicleType
-            stoptimesWithoutPatterns {
-            scheduledArrival
-            realtimeArrival
-            arrivalDelay
-            scheduledDeparture
-            realtimeDeparture
-            departureDelay
-            realtime
-            realtimeState
-            serviceDay
-            headsign
-            trip {
-                id
-                routeShortName
+            name
+            gtfsId
+            code
+            lat
+            lon
+            zoneId
+            vehicleType
+                stoptimesWithoutPatterns {
+                scheduledArrival
+                realtimeArrival
+                arrivalDelay
+                scheduledDeparture
+                realtimeDeparture
+                departureDelay
+                realtime
+                realtimeState
+                serviceDay
+                headsign
+                trip {
+                    id
+                    routeShortName
             }
           }
         }  

@@ -72,7 +72,7 @@ const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
         pollInterval: 10000
     })
     if (loading) return <p>Loading...</p>
-    else if (error) return <p>Error, ALL_STOPS query returns error.</p>
+    else if (error) return <p>Error, NEXTS query returns error.</p>
     const transportType = getTransportType(data.stop.vehicleType)
     const transportColor = getTransportColor(data.stop.vehicleType)
     const transportStyle = {

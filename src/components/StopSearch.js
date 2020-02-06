@@ -37,11 +37,11 @@ const SelectTable = ({ selectedStop, setStop, currentTimestamp, findStopForm, ha
                             onChange={handleFindStopChange}
                         >
                             <InputGroup.Prepend>
-                                <InputGroup.Text id="inputSearchPrepend">Search</InputGroup.Text>
+                                <InputGroup.Text>Search</InputGroup.Text>
                             </InputGroup.Prepend>
                             <Form.Control
                                 type="text"
-                                placeholder="Example: &quot;Vallilan varikko&quot;, &quot;3024, &quot;E4114&quot;..." />
+                                placeholder="Example: -Vallilan varikko-, -3024-, -E4114-..." />
                         </InputGroup>
                     </Form.Group>
                 </Form>
@@ -90,7 +90,7 @@ const StopSearch = () => {
         setSelectedStop(stopId)
     }
 
-    const [currentTimestamp, setcurrentTimestamp] = useState(0)
+    const [currentTimestamp, setcurrentTimestamp] = useState(timestamp())
     setTimeout(
         () => setcurrentTimestamp(timestamp()),
         1000
@@ -129,6 +129,7 @@ const StopSearch = () => {
                     mapMarkers={mapMarkers}
                     setStop={setStop}
                 />
+                {new Date().toString()}
                 <SelectTable
                     selectedStop={selectedStop}
                     setStop={setStop}

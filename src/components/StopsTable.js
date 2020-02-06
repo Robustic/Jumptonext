@@ -26,13 +26,14 @@ const StopsTableRowsNext = ({ routeShortName, realtimeDeparture, currentTimestam
     const bracketClose = realtime === true ?
         "" :
         ")"
+    const timeString = bracketOpen + timeleft(realtimeDeparture - currentTimestamp) + bracketClose
     return (
-        <>
+        <div>
             <p style={transportStyleBolded}>{routeShortName}{' '}</p>
             <p style={transportStyle}>{headsign}</p>
-            <p className={style}> {bracketOpen}{timeleft(realtimeDeparture - currentTimestamp)}{bracketClose}</p>
+            <p className={style}> {timeString}</p>
             <p className='semicolon'>{' ; '}</p>
-        </>
+        </div>
     )
 }
 
@@ -75,7 +76,9 @@ const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     return (
         <tr key={gtfsId}>
             <td>
-                <Button className={transportButtonStyle} size="sm" onClick={setStopFunction}>
+                <Button                    
+                    className={transportButtonStyle}
+                    size="sm" onClick={setStopFunction}>
                     {code}
                 </Button>
             </td>

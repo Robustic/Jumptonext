@@ -1,113 +1,87 @@
 import React from "react"
 import { MockedProvider } from "@apollo/react-testing"
-import { render, fireEvent, act } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
+import { render, fireEvent} from '@testing-library/react'
 import wait from "waait"
 import StopSearch from '../components/StopSearch'
 
-import { ALL_STOPS, NEXTS } from '../queries/queries'
-
-const mock_ALL_STOPS =
-{
-  request: {
-    query: ALL_STOPS,
-  },
-  result: () => {
-    //
-    return {
-      data: {
-        stops: [
-          {
-            gtfsId: "HSL: 6150221",
-        name: "Louhosmäki",
-            lat: 60.20219,
-            lon: 24.35642,
-            code: "Ki1521",
-            zoneId: "D",
-            vehicleType: 3
-          },
-          {
-            gtfsId: "HSL:1310602",
-            name: "Lauttasaari",
-            lat: 60.159443,
-            lon: 24.8785,
-            code: "0012",
-            zoneId: "A",
-            vehicleType: 1
-          },
-        ]
-      }
-    }
-  }
-};
+import {
+    mock_ALL_STOPS,
+    mock_NEXTS_1310602,
+    mock_NEXTS_6150221,
+    mock_NEXTS_1310109
+} from './queries.mock'
 
 
-const mock_NEXTS =
-{
-  request: {
-    query: NEXTS,
-    variables: {
-      id: 'HSL:6150219'
-    }
-  },
-  result: () => {
-    // do something, such as recording that this function has been called
-    // ...
-    return {
-      data: {
-        stop: {
-          name: 'Louhosmäki',
-          gtfsId: 'HSL:6150219',
-          code: 'Ki1519',
-          lat: 60.202282,
-          lon: 24.358088,
-          zoneId: "D",
-          vehicleType: 3,
-          stoptimesWithoutPatterns: [
-            {
-              scheduledArrival: 56160,
-              realtimeArrival: 56160,
-              arrivalDelay: 0,
-              scheduledDeparture: 56160,
-              realtimeDeparture: 56160,
-              departureDelay: 0,
-              realtime: false,
-              realtimeState: 'SCHEDULED',
-              serviceDay: 1580162400,
-              headsign: 'Kauhala',
-              trip: {
-                id: 'VHJpcDpIU0w6NjkwOV8yMDIwMDEyN19UaV8xXzE1MTU=',
-                routeShortName: '909',
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-};
+describe('Search is working properly', () => {
+    var MockDate = require('mockdate');
+    const timeHEL = 1579790109347 // 2020-01-23T14:35:09+00:00
+    const timeUTC = timeHEL - 2 * 3600000
+    MockDate.set(timeUTC)
 
-describe('and the component is loading', () => {
-  it("should render without error", async () => {
     const component = render(
-      <MockedProvider mocks={[mock_ALL_STOPS, mock_NEXTS]} addTypename={false}>
-        <StopSearch />
-      </MockedProvider>
+        <MockedProvider mocks={[
+            mock_ALL_STOPS,
+            mock_NEXTS_1310602,
+            mock_NEXTS_6150221,
+            mock_NEXTS_1310109
+        ]
+        } addTypename={false}>
+            <StopSearch />
+        </MockedProvider>
     )
+    const container = component.container
+    const queryByText = component.queryByText
+    const getByText = component.getByText
+    const { getByPlaceholderText } = component
 
-    act(() => {
-      expect(component.container).toHaveTextContent(
-        'Loading...'
-      )
-    })
+    test('Search is working properly', async () => {
+        expect(container).toHaveTextContent('Loading...')
 
-    await act(async () => {
-      await wait(0)
-      //component.debug()
-      expect(component.container).toHaveTextContent(
-        'Line code, Line name, Estimated time left'
-      )
+        await wait(0)
+        expect(container).toHaveTextContent(
+            'Line code, Line name, Estimated time left'
+        )        
+
+        const input = getByPlaceholderText(
+            "Example: -Vallilan varikko-, -3024-, -E4114-..."
+        )
+
+        fireEvent.change(input, { target: { value: "l" } })
+        await wait(0)
+
+        expect(container).toHaveTextContent('Error, NEXTS query returns error.')
+        expect(container).toHaveTextContent('Lauttasaaren kirkko')
+        expect(container).toHaveTextContent('Lauttasaari')
+        expect(container).toHaveTextContent('43m 3s')
+        expect(queryByText('(43m 3s)')).not.toBeInTheDocument()
+
+        expect(container).toHaveTextContent('Louhosmäki')
+
+        fireEvent.change(input, { target: { value: "lo" } })
+        await wait(0)
+
+        expect(queryByText('Error, NEXTS query returns error.')).not.toBeInTheDocument()
+        expect(queryByText('Lauttasaari')).not.toBeInTheDocument()
+        expect(queryByText('43m 3s')).not.toBeInTheDocument()
+
+        expect(container).toHaveTextContent('Louhosmäki')
+        expect(container).toHaveTextContent('908')
+        expect(container).toHaveTextContent('Kaislampi via Veikkola')
+        expect(container).toHaveTextContent('1h 12m 5s')        
+        expect(queryByText('(1h 12m 5s)')).not.toBeInTheDocument()
+
+        fireEvent.change(input, { target: { value: "l" } })
+        await wait(0)
+
+        expect(container).toHaveTextContent('Lauttasaaren kirkko')
+        fireEvent.click(getByText('Ki1521'))
+
+        await wait(0)
+        expect(queryByText('Lauttasaari')).not.toBeInTheDocument()
+        expect(queryByText('43m 3s')).not.toBeInTheDocument()
+
+        // component.debug()
+
     })
-  })
 })
 
