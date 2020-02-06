@@ -30,8 +30,8 @@ class Map extends React.Component {
                 ref={m => { this.leafletMap = m }}
                 center={this.props.coord}
                 minZoom={8}
-                zoom={16}
-                maxZoom={17}
+                zoom={17}
+                maxZoom={19}
                 attributionControl={true}
                 zoomControl={true}
                 doubleClickZoom={true}
