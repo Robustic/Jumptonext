@@ -45,7 +45,7 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
                 <tr>
                     <th className='tableheaderwithendlinebold' width={'70px'}>Line</th>
                     <th className='tableheaderwithendlinebold' width={'40%'}>Line name</th>
-                    <th className='tableheaderwithendlinebold'>Estimated time left (green color for realtime)</th>
+                    <th className='tableheaderwithendlinebold'>Estimated time left. Green color for realtime (brackets for scheduled).</th>
                 </tr>
             </thead>
             <tbody>

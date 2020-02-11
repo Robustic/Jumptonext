@@ -129,7 +129,6 @@ const StopSearch = () => {
                     mapMarkers={mapMarkers}
                     setStop={setStop}
                 />
-                {new Date().toString()}
                 <SelectTable
                     selectedStop={selectedStop}
                     setStop={setStop}
