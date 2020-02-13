@@ -1,12 +1,16 @@
 # Jumptonext
 
-CircleCI [![CircleCI](https://circleci.com/gh/Robustic/Jumptonext.svg?style=svg)](https://circleci.com/gh/Robustic/Jumptonext)
-
 Jumptonext is a web application which shows to the user next departures from the selected stop. Jumptonext works in the Helsinki metropolitan area. It queries timeschedules for HSL public transport automaticly. 
 
 Jumptonext is free for all! Registration or password not needed.
 
+## Heroku
+
 [Jumptonext in Heroku](https://jumptonext.herokuapp.com/) (Note! It can take about 15 seconds when web server starts.)
+
+## CircleCI
+
+[![CircleCI](https://circleci.com/gh/Robustic/Jumptonext.svg?style=svg)](https://circleci.com/gh/Robustic/Jumptonext)
 
 ## Instructions for use
 
