@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import { NEXTS } from '../queries/queries'
-import { timeleft, getTransportColor, getTransportType } from './functions'
+import { timeLeftString, getTransportColor, getTransportType } from './functions'
 
-const Next = ({ routeShortName, realtimeDeparture, currentTimestamp, headsign, transportColor, realtime }) => {
+const Next = ({ routeShortName, timeLeftString, headsign, transportColor, realtime }) => {
     const transportStyle = {
         color: transportColor
     }
@@ -18,17 +18,11 @@ const Next = ({ routeShortName, realtimeDeparture, currentTimestamp, headsign, t
     const style = realtime === true ?
         'realtimestylewithendline' :
         'notrealtimestylewithendline'
-    const bracketOpen = realtime === true ?
-        "" :
-        "("
-    const bracketClose = realtime === true ?
-        "" :
-        ")"
     return (
         <tr>
             <td style={transportStyleBold} width={'50px'}>{routeShortName}</td>
             <td style={transportStyle} width={'40%'}>{headsign}</td>
-            <td className={style}>{bracketOpen}{timeleft(realtimeDeparture - currentTimestamp)}{bracketClose}</td>
+            <td className={style}>{timeLeftString}</td>
         </tr>
     )
 }
@@ -53,8 +47,7 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
                     <Next
                         key={next.trip.id}
                         routeShortName={next.trip.routeShortName}
-                        realtimeDeparture={next.realtimeDeparture}
-                        currentTimestamp={currentTimestamp}
+                        timeLeftString={timeLeftString(currentTimestamp, next.realtimeDeparture, next.realtime)}
                         headsign={next.headsign}
                         transportColor={transportColor}
                         realtime={next.realtime}

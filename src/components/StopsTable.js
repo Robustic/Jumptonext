@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import { NEXTS } from '../queries/queries'
-import { timeleft, getTransportColor, getTransportButtonStyle } from './functions'
+import { timeLeftString, getTransportColor, getTransportButtonStyle } from './functions'
 
-const StopsTableRowsNext = ({ routeShortName, realtimeDeparture, currentTimestamp, headsign, transportColor, realtime }) => {
+const StopsTableRowsNext = ({ routeShortName, timeLeftString, headsign, transportColor, realtime }) => {
     const transportStyle = {
         color: transportColor,
         display: 'inline'
@@ -20,18 +20,11 @@ const StopsTableRowsNext = ({ routeShortName, realtimeDeparture, currentTimestam
     const style = realtime === true ?
         'realtimestyle' :
         'notrealtimestyle'
-    const bracketOpen = realtime === true ?
-        "" :
-        "("
-    const bracketClose = realtime === true ?
-        "" :
-        ")"
-    const timeString = bracketOpen + timeleft(realtimeDeparture - currentTimestamp) + bracketClose
     return (
         <div>
             <p style={transportStyleBolded}>{routeShortName}{' '}</p>
             <p style={transportStyle}>{headsign}</p>
-            <p className={style}> {timeString}</p>
+            <p className={style}> {timeLeftString}</p>
             <p className='semicolon'>{' ; '}</p>
         </div>
     )
@@ -47,8 +40,7 @@ const StopsTableRowsNexts = ({ nextstops, currentTimestamp, transportColor }) =>
                 <StopsTableRowsNext
                     key={next.trip.id}
                     routeShortName={next.trip.routeShortName}
-                    realtimeDeparture={next.realtimeDeparture}
-                    currentTimestamp={currentTimestamp}
+                    timeLeftString={timeLeftString(currentTimestamp, next.realtimeDeparture, next.realtime)}
                     headsign={next.headsign}
                     transportColor={transportColor}
                     realtime={next.realtime}
@@ -61,7 +53,8 @@ const StopsTableRowsNexts = ({ nextstops, currentTimestamp, transportColor }) =>
 
 const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     const { loading, error, data } = useQuery(NEXTS, {
-        variables: { idToSearch: gtfsId }
+        variables: { idToSearch: gtfsId },
+        pollInterval: 10000
     })
     const setStopFunction = () => {
         setStop(gtfsId, data.stop.lat, data.stop.lon)

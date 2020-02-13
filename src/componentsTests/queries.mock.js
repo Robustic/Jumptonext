@@ -6,7 +6,6 @@ export const mock_ALL_STOPS =
         query: ALL_STOPS,
     },
     result: () => {
-        //
         return {
             data: {
                 stops: [
@@ -60,8 +59,6 @@ export const mock_NEXTS_1310109 =
         },
     },
     result: () => {
-        // do something, such as recording that this function has been called
-        // ...
         return {
             data: {
                 stop: {
@@ -169,8 +166,6 @@ export const mock_NEXTS_1310602 =
         },
     },
     result: () => {
-        // do something, such as recording that this function has been called
-        // ...
         return {
             data: {
                 stop: {
@@ -246,8 +241,6 @@ export const mock_NEXTS_6150221 =
         },
     },
     result: () => {
-        // do something, such as recording that this function has been called
-        // ...
         return {
             data: {
                 stop: {

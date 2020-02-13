@@ -18,6 +18,16 @@ export function timeleft(timeleft) {
     return hours + "h " + minutes + "m " + seconds + "s"
 }
 
+export function timeLeftString(currentTimestamp, realtimeDeparture, realtimeBool) {
+    const bracketOpen = realtimeBool === true ?
+        "" :
+        "("
+    const bracketClose = realtimeBool === true ?
+        "" :
+        ")"
+    return bracketOpen + timeleft(realtimeDeparture - currentTimestamp) + bracketClose
+}
+
 export function getTransportColor(transport) {
     switch (transport) {
         case 3: // bus            

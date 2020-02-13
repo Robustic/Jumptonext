@@ -1,4 +1,4 @@
-import { timestamp, timeleft, getTransportColor, getTransportType, getTransportButtonStyle } from '../components/functions'
+import { timestamp, timeleft, timeLeftString, getTransportColor, getTransportType, getTransportButtonStyle } from '../components/functions'
 
 describe('timestamp()', () => {
     test('returns correct stamp', () => {
@@ -37,6 +37,15 @@ describe('timeleft()', () => {
         const seconds = 9
         const timestamp = seconds
         expect(timeleft(timestamp)).toEqual("9s")
+    })
+})
+
+describe('timeLeftString()', () => {
+    test('timeLeftString(52509, 58348, true) returns right string', () => {
+        expect(timeLeftString(52509, 58348, true)).toEqual("1h 37m 19s")
+    })
+    test('timeLeftString(52509, 58348, false) returns right string', () => {
+        expect(timeLeftString(52509, 58348, false)).toEqual("(1h 37m 19s)")
     })
 })
 
