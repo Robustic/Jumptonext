@@ -6,7 +6,7 @@ Jumptonext is free for all! Registration or password not needed.
 
 ## Tools used to developing Jumptonext
 
-Jumptonext is created with *React*.
+Jumptonext is created with *React* (UI and business logic both).
 
 Testing of the Jumptonext is carried out with *Jest*. All the most important functions and components are tested.
 
