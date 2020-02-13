@@ -38,7 +38,7 @@ As an alternative to the text search you can select stop from the map. You can p
 
 ## How Jumptonext works
 
-Jumptonext uses [Realtime API](https://digitransit.fi/en/developers/apis/4-realtime-api/) provided by the external service provider ([[Realtime API license](https://digitransit.fi/en/developers/)). Timetables and stop informations are collected as realtime from the Realtime API. Queries to the API are done according to the user activities.
+Jumptonext uses [Realtime API](https://digitransit.fi/en/developers/apis/4-realtime-api/) provided by the external service provider ([Realtime API license](https://digitransit.fi/en/developers/)). Timetables and stop informations are collected as realtime from the Realtime API. Queries to the API are done according to the user activities.
 
 Map in the Jumptonext view is generated with [Leaflet](https://leafletjs.com/). Map is [OpenStreetMap](https://www.openstreetmap.org/copyright) which is open data.
 
