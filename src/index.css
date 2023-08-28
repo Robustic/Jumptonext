@@ -1,6 +1,6 @@
 .flex-item {
     justify-content: center;
-  }
+}
 .tableheaderwithendlinebold {
     color: #404040;
     font-weight: normal;
@@ -39,35 +39,35 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-  }
+}
 .bg-white {
-    background:#ffffff;
+    background: #ffffff;
 }
 .bg-silver {
-    background:#C0C0C0;
+    background: #c0c0c0;
 }
 .btn-bus {
-    background: #007AC9;
+    background: #007ac9;
     color: #ffffff;
-    border: 1px solid #007AC9;
+    border: 1px solid #007ac9;
 }
 .btn-tram {
-    background: #00985F;
+    background: #00985f;
     color: #ffffff;
-    border: 1px solid #00985F;
+    border: 1px solid #00985f;
 }
 .btn-train {
-    background: #8C54A2;
+    background: #8c54a2;
     color: #ffffff;
-    border: 1px solid #8C54A2;
+    border: 1px solid #8c54a2;
 }
 .btn-sub {
-    background: #FF6319;
+    background: #ff6319;
     color: #ffffff;
-    border: 1px solid #FF6319;
+    border: 1px solid #ff6319;
 }
 .btn-ferry {
-    background: #00B9E4;
+    background: #00b9e4;
     color: #ffffff;
-    border: 1px solid #00B9E4;
+    border: 1px solid #00b9e4;
 }

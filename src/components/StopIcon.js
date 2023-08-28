@@ -32,7 +32,7 @@ export function stopIcon(transportType) {
         shadowSize: null,
         shadowAnchor: null,
         iconSize: new L.Point(20, 20),
-        className: 'leaflet-div-icon'
+        className: 'leaflet-div-icon',
     })
     return icon
 }

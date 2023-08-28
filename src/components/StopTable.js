@@ -1,59 +1,87 @@
 import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import { NEXTS } from '../queries/queries'
-import { timeLeftString, getTransportColor, getTransportType } from './functions'
+import {
+    timeLeftString,
+    getTransportColor,
+    getTransportType,
+} from './functions'
 
-const Next = ({ routeShortName, timeLeftString, headsign, transportColor, realtime }) => {
+const Next = ({
+    routeShortName,
+    timeLeftString,
+    headsign,
+    transportColor,
+    realtime,
+}) => {
     const transportStyle = {
-        color: transportColor
+        color: transportColor,
     }
     const transportStyleBold = {
         color: transportColor,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     }
-    const style = realtime === true ?
-        'realtimestylewithendline' :
-        'notrealtimestylewithendline'
+    const style =
+        realtime === true
+            ? 'realtimestylewithendline'
+            : 'notrealtimestylewithendline'
     return (
         <tr>
-            <td style={transportStyleBold} width={'50px'}>{routeShortName}</td>
-            <td style={transportStyle} width={'40%'}>{headsign}</td>
+            <td style={transportStyleBold} width={'50px'}>
+                {routeShortName}
+            </td>
+            <td style={transportStyle} width={'40%'}>
+                {headsign}
+            </td>
             <td className={style}>{timeLeftString}</td>
         </tr>
     )
 }
 
 const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
-
     const nextToView = nexttimes
         .sort()
-        .filter(next => (next.realtimeDeparture && next.realtimeDeparture > currentTimestamp))
+        .filter(
+            (next) =>
+                next.realtimeDeparture &&
+                next.realtimeDeparture > currentTimestamp
+        )
 
     return (
         <Table bordered size="sm">
             <thead>
                 <tr>
-                    <th className='tableheaderwithendlinebold' width={'70px'}>Line</th>
-                    <th className='tableheaderwithendlinebold' width={'40%'}>Line name</th>
-                    <th className='tableheaderwithendlinebold'>Estimated time left. Green color for realtime (brackets for scheduled).</th>
+                    <th className="tableheaderwithendlinebold" width={'70px'}>
+                        Line
+                    </th>
+                    <th className="tableheaderwithendlinebold" width={'40%'}>
+                        Line name
+                    </th>
+                    <th className="tableheaderwithendlinebold">
+                        Estimated time left. Green color for realtime (brackets
+                        for scheduled).
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                {nextToView.map(next => (
+                {nextToView.map((next) => (
                     <Next
                         key={next.trip.id}
                         routeShortName={next.trip.routeShortName}
-                        timeLeftString={timeLeftString(currentTimestamp, next.realtimeDeparture, next.realtime)}
+                        timeLeftString={timeLeftString(
+                            currentTimestamp,
+                            next.realtimeDeparture,
+                            next.realtime
+                        )}
                         headsign={next.headsign}
                         transportColor={transportColor}
                         realtime={next.realtime}
                     />
-                ))
-                }
+                ))}
             </tbody>
         </Table>
     )
@@ -62,7 +90,7 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
 const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
-        pollInterval: 10000
+        pollInterval: 10000,
     })
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, NEXTS query returns error.</p>
@@ -75,16 +103,21 @@ const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
         marginBottom: '1em',
         marginLeft: 0,
         marginRight: 0,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     }
     return (
         <>
             <Table>
                 <tbody>
                     <tr>
-                        <td style={transportStyle} >{data.stop.code} {data.stop.name} {transportType}</td>
+                        <td style={transportStyle}>
+                            {data.stop.code} {data.stop.name} {transportType}
+                        </td>
                         <td>
-                            <Button variant="primary" onClick={clearStopFunction}>
+                            <Button
+                                variant="primary"
+                                onClick={clearStopFunction}
+                            >
                                 Reselect stop
                             </Button>
                         </td>

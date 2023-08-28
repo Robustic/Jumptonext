@@ -1,4 +1,11 @@
-import { timestamp, timeleft, timeLeftString, getTransportColor, getTransportType, getTransportButtonStyle } from '../components/functions'
+import {
+    timestamp,
+    timeleft,
+    timeLeftString,
+    getTransportColor,
+    getTransportType,
+    getTransportButtonStyle,
+} from '../components/functions'
 
 describe('timestamp()', () => {
     test('returns correct stamp', () => {
@@ -23,29 +30,29 @@ describe('timeleft()', () => {
         const minutes = 3
         const seconds = 9
         const timestamp = 3600 * hours + 60 * minutes + seconds
-        expect(timeleft(timestamp)).toEqual("1h 3m 9s")
+        expect(timeleft(timestamp)).toEqual('1h 3m 9s')
     })
 
     test('timeleft(189) returns right string (no hours)', () => {
         const minutes = 3
         const seconds = 9
         const timestamp = 60 * minutes + seconds
-        expect(timeleft(timestamp)).toEqual("3m 9s")
+        expect(timeleft(timestamp)).toEqual('3m 9s')
     })
 
     test('timeleft(189) returns right string (no hours or minutes)', () => {
         const seconds = 9
         const timestamp = seconds
-        expect(timeleft(timestamp)).toEqual("9s")
+        expect(timeleft(timestamp)).toEqual('9s')
     })
 })
 
 describe('timeLeftString()', () => {
     test('timeLeftString(52509, 58348, true) returns right string', () => {
-        expect(timeLeftString(52509, 58348, true)).toEqual("1h 37m 19s")
+        expect(timeLeftString(52509, 58348, true)).toEqual('1h 37m 19s')
     })
     test('timeLeftString(52509, 58348, false) returns right string', () => {
-        expect(timeLeftString(52509, 58348, false)).toEqual("(1h 37m 19s)")
+        expect(timeLeftString(52509, 58348, false)).toEqual('(1h 37m 19s)')
     })
 })
 
@@ -72,42 +79,42 @@ describe('getTransportColor()', () => {
 
 describe('getTransportType()', () => {
     test('getTransportType(3) returns bus text', () => {
-        expect(getTransportType(3)).toEqual("(Bus stop)")
+        expect(getTransportType(3)).toEqual('(Bus stop)')
     })
     test('getTransportType(109) returns train text', () => {
-        expect(getTransportType(109)).toEqual("(Train station)")
+        expect(getTransportType(109)).toEqual('(Train station)')
     })
     test('getTransportType(0) returns tram text', () => {
-        expect(getTransportType(0)).toEqual("(Tram stop)")
+        expect(getTransportType(0)).toEqual('(Tram stop)')
     })
     test('getTransportType(1) returns subway text', () => {
-        expect(getTransportType(1)).toEqual("(Subway station)")
+        expect(getTransportType(1)).toEqual('(Subway station)')
     })
     test('getTransportType(4) returns ferry text', () => {
-        expect(getTransportType(4)).toEqual("(Ferry stop)")
+        expect(getTransportType(4)).toEqual('(Ferry stop)')
     })
     test('getTransportType(999) returns ferry text', () => {
-        expect(getTransportType(999)).toEqual("(Ferry stop)")
+        expect(getTransportType(999)).toEqual('(Ferry stop)')
     })
 })
 
 describe('getTransportButtonStyle()', () => {
     test('getTransportButtonStyle(3) returns bus text', () => {
-        expect(getTransportButtonStyle(3)).toEqual("btn-bus")
+        expect(getTransportButtonStyle(3)).toEqual('btn-bus')
     })
     test('getTransportButtonStyle(109) returns train text', () => {
-        expect(getTransportButtonStyle(109)).toEqual("btn-train")
+        expect(getTransportButtonStyle(109)).toEqual('btn-train')
     })
     test('getTransportButtonStyle(0) returns tram text', () => {
-        expect(getTransportButtonStyle(0)).toEqual("btn-tram")
+        expect(getTransportButtonStyle(0)).toEqual('btn-tram')
     })
     test('getTransportButtonStyle(1) returns subway text', () => {
-        expect(getTransportButtonStyle(1)).toEqual("btn-sub")
+        expect(getTransportButtonStyle(1)).toEqual('btn-sub')
     })
     test('getTransportButtonStyle(4) returns ferry text', () => {
-        expect(getTransportButtonStyle(4)).toEqual("btn-ferry")
+        expect(getTransportButtonStyle(4)).toEqual('btn-ferry')
     })
     test('getTransportButtonStyle(999) returns ferry text', () => {
-        expect(getTransportButtonStyle(999)).toEqual("btn-ferry")
+        expect(getTransportButtonStyle(999)).toEqual('btn-ferry')
     })
 })

@@ -1,10 +1,10 @@
-import { gql } from 'apollo-boost'
+import { gql } from '@apollo/client'
 
 export const ALL_STOPS = gql`
     query {
-        stops {            
+        stops {
             gtfsId
-            name            
+            name
             lat
             lon
             code
@@ -12,7 +12,7 @@ export const ALL_STOPS = gql`
             vehicleType
         }
     }
-`;
+`
 
 export const NEXTS = gql`
     query getStop($idToSearch: String!) {
@@ -24,7 +24,7 @@ export const NEXTS = gql`
             lon
             zoneId
             vehicleType
-                stoptimesWithoutPatterns {
+            stoptimesWithoutPatterns {
                 scheduledArrival
                 realtimeArrival
                 arrivalDelay
@@ -38,9 +38,8 @@ export const NEXTS = gql`
                 trip {
                     id
                     routeShortName
+                }
             }
-          }
-        }  
+        }
     }
-`;
-
+`

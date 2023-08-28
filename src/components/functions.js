@@ -13,32 +13,36 @@ export function timeleft(timeleft) {
     const minutes = Math.floor(timeleftAfterHours / 60)
     const timeleftAfterMinutes = timeleftAfterHours - minutes * 60
     const seconds = timeleftAfterMinutes
-    if (hours === 0 && minutes === 0) return seconds + "s"
-    if (hours === 0) return minutes + "m " + seconds + "s"
-    return hours + "h " + minutes + "m " + seconds + "s"
+    if (hours === 0 && minutes === 0) return seconds + 's'
+    if (hours === 0) return minutes + 'm ' + seconds + 's'
+    return hours + 'h ' + minutes + 'm ' + seconds + 's'
 }
 
-export function timeLeftString(currentTimestamp, realtimeDeparture, realtimeBool) {
-    const bracketOpen = realtimeBool === true ?
-        "" :
-        "("
-    const bracketClose = realtimeBool === true ?
-        "" :
-        ")"
-    return bracketOpen + timeleft(realtimeDeparture - currentTimestamp) + bracketClose
+export function timeLeftString(
+    currentTimestamp,
+    realtimeDeparture,
+    realtimeBool
+) {
+    const bracketOpen = realtimeBool === true ? '' : '('
+    const bracketClose = realtimeBool === true ? '' : ')'
+    return (
+        bracketOpen +
+        timeleft(realtimeDeparture - currentTimestamp) +
+        bracketClose
+    )
 }
 
 export function getTransportColor(transport) {
     switch (transport) {
-        case 3: // bus            
+        case 3: // bus
             return '#007AC9'
-        case 109: // train            
+        case 109: // train
             return '#8C54A2'
-        case 0: // tram            
+        case 0: // tram
             return '#00985F'
-        case 1: // subway            
+        case 1: // subway
             return '#FF6319'
-        case 4: // ferry            
+        case 4: // ferry
             return '#00B9E4'
         default:
             return '#00B9E4'
@@ -48,33 +52,33 @@ export function getTransportColor(transport) {
 export function getTransportType(transport) {
     switch (transport) {
         case 3:
-            return "(Bus stop)"
+            return '(Bus stop)'
         case 109:
-            return "(Train station)"
+            return '(Train station)'
         case 0:
-            return "(Tram stop)"
+            return '(Tram stop)'
         case 1:
-            return "(Subway station)"
+            return '(Subway station)'
         case 4:
-            return "(Ferry stop)"
+            return '(Ferry stop)'
         default:
-            return "(Ferry stop)"
+            return '(Ferry stop)'
     }
 }
 
 export function getTransportButtonStyle(transport) {
     switch (transport) {
-        case 3: // bus            
-            return "btn-bus"
-        case 109: // train            
-            return "btn-train"
-        case 0: // tram            
-            return "btn-tram"
-        case 1: // subway            
-            return "btn-sub"
-        case 4: // ferry            
-            return "btn-ferry"
+        case 3: // bus
+            return 'btn-bus'
+        case 109: // train
+            return 'btn-train'
+        case 0: // tram
+            return 'btn-tram'
+        case 1: // subway
+            return 'btn-sub'
+        case 4: // ferry
+            return 'btn-ferry'
         default:
-            return "btn-ferry"
+            return 'btn-ferry'
     }
 }

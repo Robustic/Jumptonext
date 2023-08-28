@@ -1,7 +1,6 @@
 import { ALL_STOPS, NEXTS } from '../queries/queries'
 
-export const mock_ALL_STOPS =
-{
+export const mock_ALL_STOPS = {
     request: {
         query: ALL_STOPS,
     },
@@ -10,64 +9,64 @@ export const mock_ALL_STOPS =
             data: {
                 stops: [
                     {
-                        gtfsId: "HSL:6150221",
-                        name: "Louhosmäki",
+                        gtfsId: 'HSL:6150221',
+                        name: 'Louhosmäki',
                         lat: 60.20219,
                         lon: 24.35642,
-                        code: "Ki1521",
-                        zoneId: "D",
-                        vehicleType: 3
+                        code: 'Ki1521',
+                        zoneId: 'D',
+                        vehicleType: 3,
                     },
                     {
-                        gtfsId: "HSL:1310602",
-                        name: "Lauttasaari",
+                        gtfsId: 'HSL:1310602',
+                        name: 'Lauttasaari',
                         lat: 60.159443,
                         lon: 24.8785,
-                        code: "0012",
-                        zoneId: "A",
-                        vehicleType: 1
+                        code: '0012',
+                        zoneId: 'A',
+                        vehicleType: 1,
                     },
                     {
-                        gtfsId: "HSL:1310109",
-                        name: "Lauttasaaren kirkko",
+                        gtfsId: 'HSL:1310109',
+                        name: 'Lauttasaaren kirkko',
                         lat: 60.15817,
                         lon: 24.87228,
-                        code: "1029",
-                        zoneId: "A",
-                        vehicleType: 3
-                    }, {
-                        gtfsId: "HSL:1310105",
-                        name: "Lauttasaarentie (M)",
+                        code: '1029',
+                        zoneId: 'A',
+                        vehicleType: 3,
+                    },
+                    {
+                        gtfsId: 'HSL:1310105',
+                        name: 'Lauttasaarentie (M)',
                         lat: 60.16055,
                         lon: 24.87946,
-                        code: "1025",
-                        zoneId: "A",
-                        vehicleType: 3
+                        code: '1025',
+                        zoneId: 'A',
+                        vehicleType: 3,
                     },
-                ]
-            }
+                ],
+            },
         }
-    }
+    },
 }
 
-export const mock_NEXTS_1310109 =
-{
+export const mock_NEXTS_1310109 = {
     request: {
         query: NEXTS,
         variables: {
-            idToSearch: "HSL:1310109"
+            idToSearch: 'HSL:1310109',
         },
     },
     result: () => {
         return {
             data: {
                 stop: {
-                    name: "Lauttasaaren kirkko",
-                    gtfsId: "HSL:1310109",
-                    code: "1029",
+                    name: 'Lauttasaaren kirkko',
+                    gtfsId: 'HSL:1310109',
+                    code: '1029',
                     lat: 60.15817,
                     lon: 24.87228,
-                    zoneId: "A",
+                    zoneId: 'A',
                     vehicleType: 3,
                     stoptimesWithoutPatterns: [
                         {
@@ -78,13 +77,13 @@ export const mock_NEXTS_1310109 =
                             realtimeDeparture: 56035,
                             departureDelay: 115,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Katajaharju",
+                            headsign: 'Katajaharju',
                             trip: {
-                                id: "VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1MTg=",
-                                routeShortName: "20"
-                            }
+                                id: 'VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1MTg=',
+                                routeShortName: '20',
+                            },
                         },
                         {
                             scheduledArrival: 56640,
@@ -94,13 +93,13 @@ export const mock_NEXTS_1310109 =
                             realtimeDeparture: 56640,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Katajaharju",
+                            headsign: 'Katajaharju',
                             trip: {
-                                id: "VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1Mjk=",
-                                routeShortName: "20"
-                            }
+                                id: 'VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1Mjk=',
+                                routeShortName: '20',
+                            },
                         },
                         {
                             scheduledArrival: 57360,
@@ -110,13 +109,13 @@ export const mock_NEXTS_1310109 =
                             realtimeDeparture: 57360,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Katajaharju",
+                            headsign: 'Katajaharju',
                             trip: {
-                                id: "VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1NDE=",
-                                routeShortName: "20"
-                            }
+                                id: 'VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1NDE=',
+                                routeShortName: '20',
+                            },
                         },
                         {
                             scheduledArrival: 58080,
@@ -126,13 +125,13 @@ export const mock_NEXTS_1310109 =
                             realtimeDeparture: 58080,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Katajaharju",
+                            headsign: 'Katajaharju',
                             trip: {
-                                id: "VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1NTM=",
-                                routeShortName: "20"
-                            }
+                                id: 'VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE1NTM=',
+                                routeShortName: '20',
+                            },
                         },
                         {
                             scheduledArrival: 58860,
@@ -142,39 +141,38 @@ export const mock_NEXTS_1310109 =
                             realtimeDeparture: 58860,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Katajaharju",
+                            headsign: 'Katajaharju',
                             trip: {
-                                id: "VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE2MDY=",
-                                routeShortName: "20"
-                            }
-                        }
-                    ]
-                }
-            }
+                                id: 'VHJpcDpIU0w6MTAyMF8yMDIwMDIwNV9Ub18xXzE2MDY=',
+                                routeShortName: '20',
+                            },
+                        },
+                    ],
+                },
+            },
         }
-    }
+    },
 }
 
-export const mock_NEXTS_1310602 =
-{
+export const mock_NEXTS_1310602 = {
     request: {
         query: NEXTS,
         variables: {
-            idToSearch: "HSL:1310602"
+            idToSearch: 'HSL:1310602',
         },
     },
     result: () => {
         return {
             data: {
                 stop: {
-                    name: "Lauttasaari",
-                    gtfsId: "HSL:1310602",
-                    code: "0012",
+                    name: 'Lauttasaari',
+                    gtfsId: 'HSL:1310602',
+                    code: '0012',
                     lat: 60.159443,
                     lon: 24.8785,
-                    zoneId: "A",
+                    zoneId: 'A',
                     vehicleType: 1,
                     stoptimesWithoutPatterns: [
                         {
@@ -185,13 +183,13 @@ export const mock_NEXTS_1310602 =
                             realtimeDeparture: 55092,
                             departureDelay: 252,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Tapiola",
+                            headsign: 'Tapiola',
                             trip: {
-                                id: "VHJpcDpIU0w6MzFNMl8yMDIwMDIwNV9Ub18yXzE0NDc=",
-                                routeShortName: "M2"
-                            }
+                                id: 'VHJpcDpIU0w6MzFNMl8yMDIwMDIwNV9Ub18yXzE0NDc=',
+                                routeShortName: 'M2',
+                            },
                         },
                         {
                             scheduledArrival: 54960,
@@ -201,13 +199,13 @@ export const mock_NEXTS_1310602 =
                             realtimeDeparture: 55192,
                             departureDelay: 232,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Matinkylä",
+                            headsign: 'Matinkylä',
                             trip: {
-                                id: "VHJpcDpIU0w6MzFNMV8yMDIwMDIwNV9Ub18yXzE0NTA=",
-                                routeShortName: "M1"
-                            }
+                                id: 'VHJpcDpIU0w6MzFNMV8yMDIwMDIwNV9Ub18yXzE0NTA=',
+                                routeShortName: 'M1',
+                            },
                         },
                         {
                             scheduledArrival: 55140,
@@ -217,39 +215,38 @@ export const mock_NEXTS_1310602 =
                             realtimeDeparture: 55232,
                             departureDelay: 92,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Tapiola",
+                            headsign: 'Tapiola',
                             trip: {
-                                id: "VHJpcDpIU0w6MzFNMl8yMDIwMDIwNV9Ub18yXzE0NTI=",
-                                routeShortName: "M2"
-                            }
+                                id: 'VHJpcDpIU0w6MzFNMl8yMDIwMDIwNV9Ub18yXzE0NTI=',
+                                routeShortName: 'M2',
+                            },
                         },
-                    ]
-                }
-            }
+                    ],
+                },
+            },
         }
-    }
+    },
 }
 
-export const mock_NEXTS_6150221 =
-{
+export const mock_NEXTS_6150221 = {
     request: {
         query: NEXTS,
         variables: {
-            idToSearch: "HSL:6150221"
+            idToSearch: 'HSL:6150221',
         },
     },
     result: () => {
         return {
             data: {
                 stop: {
-                    name: "Louhosmäki",
-                    gtfsId: "HSL:6150221",
-                    code: "Ki1521",
+                    name: 'Louhosmäki',
+                    gtfsId: 'HSL:6150221',
+                    code: 'Ki1521',
                     lat: 60.20219,
                     lon: 24.35642,
-                    zoneId: "D",
+                    zoneId: 'D',
                     vehicleType: 3,
                     stoptimesWithoutPatterns: [
                         {
@@ -260,13 +257,13 @@ export const mock_NEXTS_6150221 =
                             realtimeDeparture: 53358,
                             departureDelay: 138,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Kaislampi via Veikkola",
+                            headsign: 'Kaislampi via Veikkola',
                             trip: {
-                                id: "VHJpcDpIU0w6NjkwOEtfMjAyMDAyMDVfVG9fMV8xNDMw",
-                                routeShortName: "908K"
-                            }
+                                id: 'VHJpcDpIU0w6NjkwOEtfMjAyMDAyMDVfVG9fMV8xNDMw',
+                                routeShortName: '908K',
+                            },
                         },
                         {
                             scheduledArrival: 56820,
@@ -276,13 +273,13 @@ export const mock_NEXTS_6150221 =
                             realtimeDeparture: 56834,
                             departureDelay: 0,
                             realtime: true,
-                            realtimeState: "UPDATED",
+                            realtimeState: 'UPDATED',
                             serviceDay: 1580940000,
-                            headsign: "Kaislampi via Veikkola",
+                            headsign: 'Kaislampi via Veikkola',
                             trip: {
-                                id: "VHJpcDpIU0w6NjkwOF8yMDIwMDIwNV9Ub18xXzE1MzA=",
-                                routeShortName: "908"
-                            }
+                                id: 'VHJpcDpIU0w6NjkwOF8yMDIwMDIwNV9Ub18xXzE1MzA=',
+                                routeShortName: '908',
+                            },
                         },
                         {
                             scheduledArrival: 56880,
@@ -292,13 +289,13 @@ export const mock_NEXTS_6150221 =
                             realtimeDeparture: 56880,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Veikkola",
+                            headsign: 'Veikkola',
                             trip: {
-                                id: "VHJpcDpIU0w6NjkwOV8yMDIwMDIwNV9Ub18yXzE1MzQ=",
-                                routeShortName: "909"
-                            }
+                                id: 'VHJpcDpIU0w6NjkwOV8yMDIwMDIwNV9Ub18yXzE1MzQ=',
+                                routeShortName: '909',
+                            },
                         },
                         {
                             scheduledArrival: 60240,
@@ -308,13 +305,13 @@ export const mock_NEXTS_6150221 =
                             realtimeDeparture: 60240,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Veikkola",
+                            headsign: 'Veikkola',
                             trip: {
-                                id: "VHJpcDpIU0w6NjkwOV8yMDIwMDIwNV9Ub18yXzE2MzA=",
-                                routeShortName: "909"
-                            }
+                                id: 'VHJpcDpIU0w6NjkwOV8yMDIwMDIwNV9Ub18yXzE2MzA=',
+                                routeShortName: '909',
+                            },
                         },
                         {
                             scheduledArrival: 60420,
@@ -324,17 +321,17 @@ export const mock_NEXTS_6150221 =
                             realtimeDeparture: 60420,
                             departureDelay: 0,
                             realtime: false,
-                            realtimeState: "SCHEDULED",
+                            realtimeState: 'SCHEDULED',
                             serviceDay: 1580940000,
-                            headsign: "Kaislampi via Veikkola",
+                            headsign: 'Kaislampi via Veikkola',
                             trip: {
-                                id: "VHJpcDpIU0w6NjkwOF8yMDIwMDIwNV9Ub18xXzE2MzA=",
-                                routeShortName: "908"
-                            }
-                        }
-                    ]
-                }
-            }
+                                id: 'VHJpcDpIU0w6NjkwOF8yMDIwMDIwNV9Ub18xXzE2MzA=',
+                                routeShortName: '908',
+                            },
+                        },
+                    ],
+                },
+            },
         }
-    }
+    },
 }
