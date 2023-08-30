@@ -8,7 +8,7 @@
     "scripts": {
         "start": "node server.js",
         "try": "react-dotenv && react-scripts start",
-        "build": "react-scripts build --prod",
+        "build": "npm install && react-scripts build --prod",
         "deploy": "git push heroku master",
         "logs:prod": "heroku logs --tail",
         "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
