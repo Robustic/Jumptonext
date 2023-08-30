@@ -43,3 +43,21 @@ export const NEXTS = gql`
         }
     }
 `
+
+export const GET_ME = gql`
+    query {
+        me {
+            id
+            username
+            favouriteStops
+        }
+    }
+`
+
+export const LOGIN = gql`
+    mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+            value
+        }
+    }
+`

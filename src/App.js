@@ -10,16 +10,17 @@ import { setContext } from '@apollo/client/link/context'
 import env from 'react-dotenv'
 
 const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('jumptonext-user-token')
     return {
         headers: {
             ...headers,
-            'digitransit-subscription-key': env.DIGI_TRANSIT_DESCRIPTION,
+            authorization: token ? `Bearer ${token}` : null,
         },
     }
 })
 
 const httpLink = createHttpLink({
-    uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+    uri: 'http://localhost:4000',
 })
 
 const client = new ApolloClient({

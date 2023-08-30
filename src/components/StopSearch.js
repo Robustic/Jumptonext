@@ -10,6 +10,7 @@ import { ALL_STOPS } from '../queries/queries'
 import pic from '../pictures/logo192.png'
 import StopsTable from './StopsTable'
 import StopTable from './StopTable'
+import LinkBar from './LinkBar'
 import { timestamp } from './functions'
 
 const SelectTable = ({
@@ -64,6 +65,7 @@ const SelectTable = ({
 const StopSearch = () => {
     const { loading, error, data } = useQuery(ALL_STOPS)
 
+    const [token, setToken] = useState(null)
     const [findStopForm, setFindStopForm] = useState()
     const [findStop, setFindStop] = useState([])
     const [selectedStop, setSelectedStop] = useState()
@@ -153,6 +155,7 @@ const StopSearch = () => {
     return (
         <div className="container">
             <div className="bg-white pl-3 pr-3 pb-1">
+                <LinkBar token={token} setToken={setToken} />
                 <StopMap
                     center={[x, y]}
                     mapBoundsChanged={mapBoundsChanged}
