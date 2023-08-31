@@ -11,7 +11,9 @@ import { setContext } from '@apollo/client/link/context'
 import { GET_SUB } from './queries/queries'
 import env from 'react-dotenv'
 
-const token = localStorage.getItem('jumptonext-user-token').toString()
+const token = localStorage.getItem('jumptonext-user-token')
+    ? localStorage.getItem('jumptonext-user-token').toString()
+    : null
 
 const App = () => {
     const [clientDb, setClientDb] = useState(null)
