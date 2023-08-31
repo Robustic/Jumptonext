@@ -62,10 +62,10 @@ const SelectTable = ({
     )
 }
 
-const StopSearch = () => {
+const StopSearch = ({ clientDb }) => {
     const { loading, error, data } = useQuery(ALL_STOPS)
 
-    const [token, setToken] = useState(null)
+    const [user, setUser] = useState(null)
     const [findStopForm, setFindStopForm] = useState()
     const [findStop, setFindStop] = useState([])
     const [selectedStop, setSelectedStop] = useState()
@@ -155,7 +155,7 @@ const StopSearch = () => {
     return (
         <div className="container">
             <div className="bg-white pl-3 pr-3 pb-1">
-                <LinkBar token={token} setToken={setToken} />
+                <LinkBar clientDb={clientDb} user={user} setUser={setUser} />
                 <StopMap
                     center={[x, y]}
                     mapBoundsChanged={mapBoundsChanged}

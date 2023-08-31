@@ -1,22 +1,15 @@
 import Button from 'react-bootstrap/Button'
-import { useQuery, useApolloClient } from '@apollo/client'
 
 import LoginForm from './LoginForm'
-import { GET_ME } from '../queries/queries'
 
-const LoggedIn = ({ token, setToken }) => {
-    const client = useApolloClient()
-
-    const { loading, error, data } = useQuery(GET_ME)
-
+const LoggedIn = ({ clientDb, user, setUser }) => {
     const logout = () => {
-        setToken(null)
+        setUser(null)
         localStorage.clear()
-        client.resetStore()
+        clientDb.resetStore()
     }
 
-    const username =
-        loading === false || data.me === false ? '' : data.me.username
+    const username = user ? user.username : ''
 
     return (
         <div>
@@ -28,9 +21,9 @@ const LoggedIn = ({ token, setToken }) => {
     )
 }
 
-const LoginLogout = ({ token, setToken }) => {
-    if (token) {
-        return <LoggedIn token={token} setToken={setToken} />
+const LoginLogout = ({ clientDb, user, setUser }) => {
+    if (user) {
+        return <LoggedIn clientDb={clientDb} user={user} setUser={setUser} />
     }
 
     return (
@@ -38,13 +31,13 @@ const LoginLogout = ({ token, setToken }) => {
             <Button variant="primary" onClick={() => console.log('login')}>
                 Login
             </Button>
-            <LoginForm setToken={setToken} />
+            <LoginForm clientDb={clientDb} setUser={setUser} />
         </div>
     )
 }
 
-const LinkBar = ({ token, setToken }) => {
-    return <LoginLogout token={token} setToken={setToken} />
+const LinkBar = ({ clientDb, user, setUser }) => {
+    return <LoginLogout clientDb={clientDb} user={user} setUser={setUser} />
 }
 
 export default LinkBar

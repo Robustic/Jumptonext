@@ -1,29 +1,42 @@
-import { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
-import { LOGIN } from '../queries/queries'
+import { useState } from 'react'
+import { LOGIN, GET_ME } from '../queries/queries'
 
-const LoginForm = ({ setError, setToken }) => {
+const LoginForm = ({ clientDb, setUser }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const [login, result] = useMutation(LOGIN, {
-        onError: (error) => {
-            setError(error.graphQLErrors[0].message)
-        },
-    })
-
-    useEffect(() => {
-        if (result.data) {
-            const token = result.data.login.value
-            setToken(token)
-            localStorage.setItem('jumptonext-user-token', token)
-        }
-    }, [result.data]) // eslint-disable-line
+    const [token, setToken] = useState('')
 
     const submit = async (event) => {
         event.preventDefault()
+        console.log()
+        clientDb
+            .mutate({
+                mutation: LOGIN,
+                variables: { username: username, password: password },
+            })
+            .then((result) => {
+                setToken(result.data.login.value)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
 
-        login({ variables: { username, password } })
+        if (token) {
+            localStorage.setItem('jumptonext-user-token', token)
+            clientDb
+                .query({ query: GET_ME })
+                .then((result) => {
+                    setUser(result.data.me)
+                })
+                .catch((error) => {
+                    return (
+                        <p>
+                            Error, GET_ME query returns error. Check your
+                            network connection status: {error}
+                        </p>
+                    )
+                })
+        }
     }
 
     return (

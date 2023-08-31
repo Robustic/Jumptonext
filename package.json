@@ -9,8 +9,6 @@
         "start": "node server.js",
         "try": "react-dotenv && react-scripts start",
         "build": "npm install && react-scripts build --prod",
-        "deploy": "git push heroku master",
-        "logs:prod": "heroku logs --tail",
         "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
         "eslint": "eslint .",
         "coverage": "set CI=true && react-scripts test --watchAll --coverage",

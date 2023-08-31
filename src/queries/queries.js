@@ -54,6 +54,14 @@ export const GET_ME = gql`
     }
 `
 
+export const GET_SUB = gql`
+    query {
+        sub {
+            sub
+        }
+    }
+`
+
 export const LOGIN = gql`
     mutation login($username: String!, $password: String!) {
         login(username: $username, password: $password) {
