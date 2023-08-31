@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapMarker from './MapMarker'
 
-const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop }) => {
+const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
     const [map, setMap] = useState(null)
     const [x, y] = center
 
@@ -64,6 +64,10 @@ const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop }) => {
         ),
         [center, mapMarkers, setStop],
     )
+
+    if (form !== 'main') {
+        return <></>
+    }
 
     return <div>{displayMap}</div>
 }

@@ -48,7 +48,7 @@ const StopsTableRowsNexts = ({
         .filter(
             (next) =>
                 next.realtimeDeparture &&
-                next.realtimeDeparture > currentTimestamp
+                next.realtimeDeparture > currentTimestamp,
         )
     return (
         <>
@@ -59,7 +59,7 @@ const StopsTableRowsNexts = ({
                     timeLeftString={timeLeftString(
                         currentTimestamp,
                         next.realtimeDeparture,
-                        next.realtime
+                        next.realtime,
                     )}
                     headsign={next.headsign}
                     transportColor={transportColor}
@@ -75,9 +75,11 @@ const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
         variables: { idToSearch: gtfsId },
         pollInterval: 10000,
     })
+
     const setStopFunction = () => {
         setStop(gtfsId, data.stop.lat, data.stop.lon)
     }
+
     if (loading)
         return (
             <tr>
@@ -120,6 +122,9 @@ const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
 }
 
 const StopsTable = ({ findStop, setStop, currentTimestamp }) => {
+    if (findStop.length === 0) {
+        return <></>
+    }
     return (
         <Table bordered size="sm">
             <thead>

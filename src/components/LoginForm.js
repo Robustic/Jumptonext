@@ -1,14 +1,19 @@
 import { useState } from 'react'
+
 import { LOGIN, GET_ME } from '../queries/queries'
 
-const LoginForm = ({ clientDb, setUser }) => {
+const LoginForm = ({ clientDb, user, setUser, form, setForm }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [token, setToken] = useState('')
 
+    if (form !== 'login') {
+        return <></>
+    }
+
     const submit = async (event) => {
         event.preventDefault()
-        console.log()
+
         clientDb
             .mutate({
                 mutation: LOGIN,
@@ -27,6 +32,7 @@ const LoginForm = ({ clientDb, setUser }) => {
                 .query({ query: GET_ME })
                 .then((result) => {
                     setUser(result.data.me)
+                    setForm('main')
                 })
                 .catch((error) => {
                     return (
