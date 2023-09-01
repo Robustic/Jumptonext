@@ -16,7 +16,7 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             paddingLeft: 10,
                             color: 'white',
                         }}
-                        onClick={() => setForm('login')}
+                        onClick={() => setForm('Login')}
                     >
                         <u
                             style={{
@@ -24,6 +24,25 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             }}
                         >
                             Login
+                        </u>
+                    </Navbar.Text>
+                </Nav.Item>
+                <Nav.Item>
+                    <Navbar.Text
+                        style={{
+                            height: '100%',
+                            display: 'flex',
+                            paddingLeft: 10,
+                            color: 'white',
+                        }}
+                        onClick={() => setForm('Create account')}
+                    >
+                        <u
+                            style={{
+                                margin: 'auto',
+                            }}
+                        >
+                            Create account
                         </u>
                     </Navbar.Text>
                 </Nav.Item>
@@ -38,6 +57,27 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
 
         return (
             <>
+                <Nav.Item>
+                    <Navbar.Text
+                        style={{
+                            height: '100%',
+                            display: 'flex',
+                            paddingLeft: 10,
+                            color: 'white',
+                        }}
+                        onClick={() => {
+                            setForm('favourites')
+                        }}
+                    >
+                        <u
+                            style={{
+                                margin: 'auto',
+                            }}
+                        >
+                            Favourite stops
+                        </u>
+                    </Navbar.Text>
+                </Nav.Item>
                 <Nav.Item>
                     <Navbar.Text
                         style={{
@@ -136,7 +176,7 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                                         margin: 'auto',
                                     }}
                                 >
-                                    Search
+                                    Search stops
                                 </u>
                             </Navbar.Text>
                         </Nav.Item>

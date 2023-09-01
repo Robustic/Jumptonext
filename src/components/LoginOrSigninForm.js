@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 
-const LoginForm = ({ form, login }) => {
+const LoginOrSigninForm = ({ form, login, formText }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    if (form !== 'login') {
+    if (form !== formText) {
         return <></>
     }
 
@@ -16,7 +16,14 @@ const LoginForm = ({ form, login }) => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Form onSubmit={submit} style={{ width: 200 }}>
+            <Form onSubmit={submit} style={{ padding: 10, width: 200 }}>
+                <b
+                    style={{
+                        fontSize: 20,
+                    }}
+                >
+                    {formText}
+                </b>
                 <Form.Group>
                     <InputGroup
                         style={{ paddingTop: 10, paddingBottom: 10 }}
@@ -40,7 +47,7 @@ const LoginForm = ({ form, login }) => {
                             marginBottom: 10,
                         }}
                     >
-                        Login
+                        {formText}
                     </Button>
                 </Form.Group>
             </Form>
@@ -48,4 +55,4 @@ const LoginForm = ({ form, login }) => {
     )
 }
 
-export default LoginForm
+export default LoginOrSigninForm

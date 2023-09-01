@@ -7,11 +7,11 @@ import Image from 'react-bootstrap/Image'
 import '../index.css'
 
 import StopMap from './StopMap'
-import { ALL_STOPS, LOGIN, GET_ME } from '../queries/queries'
+import { ALL_STOPS, LOGIN, CREATE_ACCOUNT, GET_ME } from '../queries/queries'
 import pic from '../pictures/logo192.png'
 import StopsTable from './StopsTable'
 import StopTable from './StopTable'
-import LoginForm from './LoginForm'
+import LoginOrSigninForm from './LoginOrSigninForm'
 import Menu from './Menu'
 import { timestamp } from './functions'
 
@@ -174,6 +174,20 @@ const StopSearch = ({ clientDb, stops }) => {
             })
     }
 
+    const createAccount = (username, password) => {
+        clientDb
+            .mutate({
+                mutation: CREATE_ACCOUNT,
+                variables: { username, password },
+            })
+            .then((result) => {
+                setForm('Login')
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     return (
         <div className="container">
             <div className="bg-white pl-3 pr-3 pb-1">
@@ -184,7 +198,20 @@ const StopSearch = ({ clientDb, stops }) => {
                     form={form}
                     setForm={setForm}
                 />
-                {<LoginForm form={form} login={login} />}
+                {
+                    <LoginOrSigninForm
+                        form={form}
+                        login={login}
+                        formText={'Login'}
+                    />
+                }
+                {
+                    <LoginOrSigninForm
+                        form={form}
+                        login={createAccount}
+                        formText={'Create account'}
+                    />
+                }
                 {
                     <div>
                         <StopMap
