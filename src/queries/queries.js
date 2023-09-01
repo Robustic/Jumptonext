@@ -78,3 +78,19 @@ export const CREATE_ACCOUNT = gql`
         }
     }
 `
+
+export const ADD_TO_FAVOURITES = gql`
+    mutation addFavouriteStop($newFavouriteStop: String!) {
+        addFavouriteStop(newFavouriteStop: $newFavouriteStop) {
+            favouriteStops
+        }
+    }
+`
+
+export const REMOVE_FROM_FAVOURITES = gql`
+    mutation removeFavouriteStop($favouriteStopToRemove: String!) {
+        removeFavouriteStop(favouriteStopToRemove: $favouriteStopToRemove) {
+            favouriteStops
+        }
+    }
+`

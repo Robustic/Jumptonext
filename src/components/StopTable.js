@@ -88,7 +88,13 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
     )
 }
 
-const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
+const StopTable = ({
+    gtfsId,
+    clearStopFunction,
+    currentTimestamp,
+    addToFavourites,
+    removeFromFavourites,
+}) => {
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
         pollInterval: 10000,
@@ -106,6 +112,36 @@ const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
         marginRight: 0,
         fontWeight: 'bold',
     }
+
+    const AddToFavourites = ({
+        addToFavourites,
+        removeFromFavourites,
+        gtfsId,
+    }) => {
+        console.lo
+        if (addToFavourites) {
+            return (
+                <Button
+                    variant="success"
+                    onClick={() => addToFavourites(gtfsId)}
+                >
+                    Add to favourites
+                </Button>
+            )
+        }
+        if (removeFromFavourites) {
+            return (
+                <Button
+                    variant="danger"
+                    onClick={() => removeFromFavourites(gtfsId)}
+                >
+                    Remove from favourites
+                </Button>
+            )
+        }
+        return <></>
+    }
+
     return (
         <>
             <Table>
@@ -121,6 +157,11 @@ const StopTable = ({ gtfsId, clearStopFunction, currentTimestamp }) => {
                             >
                                 Reselect stop
                             </Button>
+                            <AddToFavourites
+                                addToFavourites={addToFavourites}
+                                removeFromFavourites={removeFromFavourites}
+                                gtfsId={data.stop.gtfsId}
+                            />
                         </td>
                     </tr>
                 </tbody>

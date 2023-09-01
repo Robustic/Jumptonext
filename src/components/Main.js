@@ -7,13 +7,43 @@ import Image from 'react-bootstrap/Image'
 import '../index.css'
 
 import StopMap from './StopMap'
-import { ALL_STOPS, LOGIN, CREATE_ACCOUNT, GET_ME } from '../queries/queries'
+import {
+    ALL_STOPS,
+    LOGIN,
+    CREATE_ACCOUNT,
+    GET_ME,
+    ADD_TO_FAVOURITES,
+    REMOVE_FROM_FAVOURITES,
+} from '../queries/queries'
 import pic from '../pictures/logo192.png'
 import StopsTable from './StopsTable'
 import StopTable from './StopTable'
 import LoginOrSigninForm from './LoginOrSigninForm'
 import Menu from './Menu'
 import { timestamp } from './functions'
+
+const Search = ({ form, findStopForm, handleFindStopChange }) => {
+    if (form !== 'main') {
+        return <></>
+    }
+    return (
+        <Form>
+            <Form.Group>
+                <InputGroup
+                    style={{ paddingBottom: 10 }}
+                    value={findStopForm}
+                    onChange={handleFindStopChange}
+                >
+                    <InputGroup.Text>Search</InputGroup.Text>
+                    <Form.Control
+                        type="text"
+                        placeholder="Example: 'Vallilan varikko', '3024', 'E4114'..."
+                    />
+                </InputGroup>
+            </Form.Group>
+        </Form>
+    )
+}
 
 const SelectTable = ({
     selectedStop,
@@ -23,12 +53,23 @@ const SelectTable = ({
     handleFindStopChange,
     findStop,
     form,
+    user,
+    showFavourites = false,
+    addToFavourites,
+    removeFromFavourites,
 }) => {
-    if (form !== 'main') {
+    if (
+        (form !== 'main' && form !== 'favourites') ||
+        (form === 'main' && showFavourites) ||
+        (form === 'favourites' && !showFavourites)
+    ) {
         return <></>
     }
 
     if (selectedStop && selectedStop != '') {
+        const inFavourites = user
+            ? user.favouriteStops.includes(String(selectedStop))
+            : false
         const clearStopFunction = () => {
             setStop()
         }
@@ -39,6 +80,10 @@ const SelectTable = ({
                     gtfsId={selectedStop}
                     clearStopFunction={clearStopFunction}
                     currentTimestamp={currentTimestamp}
+                    addToFavourites={user && !inFavourites && addToFavourites}
+                    removeFromFavourites={
+                        user && inFavourites && removeFromFavourites
+                    }
                 />
             </div>
         )
@@ -46,21 +91,11 @@ const SelectTable = ({
 
     return (
         <div className="pt-3">
-            <Form>
-                <Form.Group>
-                    <InputGroup
-                        style={{ paddingBottom: 10 }}
-                        value={findStopForm}
-                        onChange={handleFindStopChange}
-                    >
-                        <InputGroup.Text>Search</InputGroup.Text>
-                        <Form.Control
-                            type="text"
-                            placeholder="Example: 'Vallilan varikko', '3024', 'E4114'..."
-                        />
-                    </InputGroup>
-                </Form.Group>
-            </Form>
+            <Search
+                form={form}
+                findStopForm={findStopForm}
+                handleFindStopChange={handleFindStopChange}
+            />
             <StopsTable
                 findStop={findStop}
                 setStop={setStop}
@@ -87,6 +122,11 @@ const StopSearch = ({ clientDb, stops }) => {
     const token = localStorage.getItem('jumptonext-user-token')
         ? localStorage.getItem('jumptonext-user-token')
         : null
+
+    const favouriteStops =
+        stops && user
+            ? stops.filter((s) => user.favouriteStops.includes(s.gtfsId))
+            : []
 
     useEffect(() => {
         clientDb
@@ -174,6 +214,15 @@ const StopSearch = ({ clientDb, stops }) => {
             })
     }
 
+    const logout = () => {
+        setUser(null)
+        localStorage.clear()
+        clientDb.resetStore()
+        setForm('main')
+        setSelectedStop(null)
+        setFindStop([])
+    }
+
     const createAccount = (username, password) => {
         clientDb
             .mutate({
@@ -182,6 +231,36 @@ const StopSearch = ({ clientDb, stops }) => {
             })
             .then((result) => {
                 setForm('Login')
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const addToFavourites = (newFavouriteStop) => {
+        clientDb
+            .mutate({
+                mutation: ADD_TO_FAVOURITES,
+                variables: { newFavouriteStop },
+            })
+            .then((result) => {
+                user.favouriteStops =
+                    result.data.addFavouriteStop.favouriteStops
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const removeFromFavourites = (favouriteStopToRemove) => {
+        clientDb
+            .mutate({
+                mutation: REMOVE_FROM_FAVOURITES,
+                variables: { favouriteStopToRemove },
+            })
+            .then((result) => {
+                user.favouriteStops =
+                    result.data.removeFavouriteStop.favouriteStops
             })
             .catch((error) => {
                 console.log(error)
@@ -197,6 +276,9 @@ const StopSearch = ({ clientDb, stops }) => {
                     setUser={setUser}
                     form={form}
                     setForm={setForm}
+                    logout={logout}
+                    setFindStop={setFindStop}
+                    setSelectedStop={setSelectedStop}
                 />
                 {
                     <LoginOrSigninForm
@@ -222,6 +304,7 @@ const StopSearch = ({ clientDb, stops }) => {
                             form={form}
                         />
                         <SelectTable
+                            user={user}
                             selectedStop={selectedStop}
                             setStop={setStop}
                             currentTimestamp={currentTimestamp}
@@ -229,6 +312,22 @@ const StopSearch = ({ clientDb, stops }) => {
                             handleFindStopChange={handleFindStopChange}
                             findStop={findStop}
                             form={form}
+                            showFavourites={false}
+                            addToFavourites={addToFavourites}
+                            removeFromFavourites={removeFromFavourites}
+                        />
+                        <SelectTable
+                            user={user}
+                            selectedStop={selectedStop}
+                            setStop={setStop}
+                            currentTimestamp={currentTimestamp}
+                            findStopForm={''}
+                            handleFindStopChange={handleFindStopChange}
+                            findStop={favouriteStops}
+                            form={form}
+                            showFavourites={true}
+                            addToFavourites={addToFavourites}
+                            removeFromFavourites={removeFromFavourites}
                         />
                     </div>
                 }

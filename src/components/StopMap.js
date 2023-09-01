@@ -65,7 +65,7 @@ const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
         [center, mapMarkers, setStop],
     )
 
-    if (form !== 'main') {
+    if (form !== 'main' && form != 'favourites') {
         return <></>
     }
 

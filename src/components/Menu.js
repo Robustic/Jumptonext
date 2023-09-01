@@ -1,6 +1,15 @@
 import { Button, Navbar, Nav } from 'react-bootstrap'
 
-const Menu = ({ clientDb, user, setUser, setForm }) => {
+const Menu = ({
+    clientDb,
+    user,
+    setUser,
+    form,
+    setForm,
+    logout,
+    setFindStop,
+    setSelectedStop,
+}) => {
     const login = () => {
         if (user) {
             return null
@@ -14,7 +23,7 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             height: '100%',
                             display: 'flex',
                             paddingLeft: 10,
-                            color: 'white',
+                            color: form === 'Login' ? 'yellow' : 'white',
                         }}
                         onClick={() => setForm('Login')}
                     >
@@ -33,7 +42,8 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             height: '100%',
                             display: 'flex',
                             paddingLeft: 10,
-                            color: 'white',
+                            color:
+                                form === 'Create account' ? 'yellow' : 'white',
                         }}
                         onClick={() => setForm('Create account')}
                     >
@@ -63,9 +73,10 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             height: '100%',
                             display: 'flex',
                             paddingLeft: 10,
-                            color: 'white',
+                            color: form === 'favourites' ? 'yellow' : 'white',
                         }}
                         onClick={() => {
+                            setSelectedStop(null)
                             setForm('favourites')
                         }}
                     >
@@ -86,12 +97,7 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             paddingLeft: 10,
                             color: 'white',
                         }}
-                        onClick={() => {
-                            setUser(null)
-                            localStorage.clear()
-                            clientDb.resetStore()
-                            setForm('main')
-                        }}
+                        onClick={logout}
                     >
                         <u
                             style={{
@@ -167,9 +173,13 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                                     height: '100%',
                                     display: 'flex',
                                     paddingLeft: 10,
-                                    color: 'white',
+                                    color: form === 'main' ? 'yellow' : 'white',
                                 }}
-                                onClick={() => setForm('main')}
+                                onClick={() => {
+                                    setSelectedStop(null)
+                                    setFindStop([])
+                                    setForm('main')
+                                }}
                             >
                                 <u
                                     style={{
