@@ -10,7 +10,7 @@
         "build": "npm install && react-scripts build --prod",
         "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
         "eslint": "eslint .",
-        "coverage": "set CI=true && react-scripts test --watchAll --coverage",
+        "coverage": "set CI=true && react-scripts test --watchAll --coverage --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
         "eject": "react-scripts eject"
     },
     "dependencies": {
