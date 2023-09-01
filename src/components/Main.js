@@ -181,12 +181,6 @@ const StopSearch = ({ clientDb, stops }) => {
     )
 }
 
-const SearchFirstTime = ({ setStops }) => {
-    setStops(data.stops)
-
-    return <></>
-}
-
 const Main = ({ clientDb }) => {
     const { data, loading, error } = useQuery(ALL_STOPS)
 

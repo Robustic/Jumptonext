@@ -10,10 +10,21 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
             <>
                 <Nav.Item>
                     <Navbar.Text
-                        style={{ paddingLeft: 10, color: 'white' }}
+                        style={{
+                            height: '100%',
+                            display: 'flex',
+                            paddingLeft: 10,
+                            color: 'white',
+                        }}
                         onClick={() => setForm('login')}
                     >
-                        <u>Login</u>
+                        <u
+                            style={{
+                                margin: 'auto',
+                            }}
+                        >
+                            Login
+                        </u>
                     </Navbar.Text>
                 </Nav.Item>
             </>
@@ -27,12 +38,14 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
 
         return (
             <>
-                <Navbar.Text style={{ paddingLeft: 10, color: 'white' }}>
-                    <b>{user.username}</b> logged in
-                </Navbar.Text>
                 <Nav.Item>
                     <Navbar.Text
-                        style={{ paddingLeft: 10, color: 'white' }}
+                        style={{
+                            height: '100%',
+                            display: 'flex',
+                            paddingLeft: 10,
+                            color: 'white',
+                        }}
                         onClick={() => {
                             setUser(null)
                             localStorage.clear()
@@ -40,9 +53,34 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                             setForm('main')
                         }}
                     >
-                        <u>Logout</u>
+                        <u
+                            style={{
+                                margin: 'auto',
+                            }}
+                        >
+                            Logout
+                        </u>
                     </Navbar.Text>
                 </Nav.Item>
+                <Navbar.Text
+                    style={{ display: 'flex', paddingLeft: 10, color: 'white' }}
+                >
+                    <b
+                        style={{
+                            margin: 'auto',
+                        }}
+                    >
+                        {user.username}
+                    </b>
+                    <p
+                        style={{
+                            margin: 'auto',
+                            paddingLeft: 5,
+                        }}
+                    >
+                        logged in
+                    </p>
+                </Navbar.Text>
             </>
         )
     }
@@ -53,7 +91,10 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                 className="navbar navbar-dark"
                 collapseOnSelect
                 expand="lg"
-                style={{ backgroundColor: '#205095', paddingLeft: 10 }}
+                style={{
+                    backgroundColor: '#205095',
+                    paddingLeft: 10,
+                }}
             >
                 <Navbar.Toggle
                     style={{ borderColor: 'white' }}
@@ -63,10 +104,40 @@ const Menu = ({ clientDb, user, setUser, setForm }) => {
                     <Nav className="mr-auto">
                         <Nav.Item>
                             <Navbar.Text
-                                style={{ paddingLeft: 10, color: 'white' }}
+                                style={{
+                                    display: 'flex',
+                                    fontSize: 20,
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    color: 'white',
+                                }}
+                            >
+                                <b
+                                    style={{
+                                        margin: 'auto',
+                                    }}
+                                >
+                                    Jumptonext
+                                </b>
+                            </Navbar.Text>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Navbar.Text
+                                style={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    paddingLeft: 10,
+                                    color: 'white',
+                                }}
                                 onClick={() => setForm('main')}
                             >
-                                <u>Search</u>
+                                <u
+                                    style={{
+                                        margin: 'auto',
+                                    }}
+                                >
+                                    Search
+                                </u>
                             </Navbar.Text>
                         </Nav.Item>
                         {login()}

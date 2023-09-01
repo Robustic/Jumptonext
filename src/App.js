@@ -5,7 +5,6 @@ import {
     InMemoryCache,
     ApolloProvider,
     createHttpLink,
-    gql,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { GET_SUB } from './queries/queries'

@@ -21,7 +21,8 @@ const LoginForm = ({ clientDb, user, setUser, form, setForm }) => {
                 variables: { username: username, password: password },
             })
             .then((result) => {
-                setToken(result.data.login.value)
+                const token = result.data.login.value
+                setToken(token)
             })
             .catch((error) => {
                 console.log(error)
