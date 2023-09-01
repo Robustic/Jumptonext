@@ -1,12 +1,9 @@
 import { useState } from 'react'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 
-import { LOGIN, GET_ME } from '../queries/queries'
-
-const LoginForm = ({ clientDb, user, setUser, form, setForm }) => {
+const LoginForm = ({ form, login }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [token, setToken] = useState('')
 
     if (form !== 'login') {
         return <></>
@@ -14,37 +11,7 @@ const LoginForm = ({ clientDb, user, setUser, form, setForm }) => {
 
     const submit = async (event) => {
         event.preventDefault()
-
-        clientDb
-            .mutate({
-                mutation: LOGIN,
-                variables: { username: username, password: password },
-            })
-            .then((result) => {
-                const token = result.data.login.value
-                setToken(token)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        if (token) {
-            localStorage.setItem('jumptonext-user-token', token)
-            clientDb
-                .query({ query: GET_ME })
-                .then((result) => {
-                    setUser(result.data.me)
-                    setForm('main')
-                })
-                .catch((error) => {
-                    return (
-                        <p>
-                            Error, GET_ME query returns error. Check your
-                            network connection status: {error}
-                        </p>
-                    )
-                })
-        }
+        login(username, password)
     }
 
     return (

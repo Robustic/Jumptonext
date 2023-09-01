@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form'
@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image'
 import '../index.css'
 
 import StopMap from './StopMap'
-import { ALL_STOPS } from '../queries/queries'
+import { ALL_STOPS, LOGIN, GET_ME } from '../queries/queries'
 import pic from '../pictures/logo192.png'
 import StopsTable from './StopsTable'
 import StopTable from './StopTable'
@@ -74,6 +74,7 @@ const StopSearch = ({ clientDb, stops }) => {
     const [form, setForm] = useState('main')
 
     const [user, setUser] = useState(null)
+
     const [findStopForm, setFindStopForm] = useState()
     const [findStop, setFindStop] = useState([])
     const [selectedStop, setSelectedStop] = useState()
@@ -82,6 +83,27 @@ const StopSearch = ({ clientDb, stops }) => {
     const [y, setY] = useState(24.941671)
 
     const [mapMarkers, setMapMarkers] = useState([])
+
+    const token = localStorage.getItem('jumptonext-user-token')
+        ? localStorage.getItem('jumptonext-user-token')
+        : null
+
+    useEffect(() => {
+        clientDb
+            .query({ query: GET_ME, fetchPolicy: 'network-only' })
+            .then((result) => {
+                setForm('main')
+                setUser(result.data.me)
+            })
+            .catch((error) => {
+                return (
+                    <p>
+                        Error, GET_ME query returns error. Check your network
+                        connection status: {error}
+                    </p>
+                )
+            })
+    }, [token])
 
     const handleFindStopChange = (event) => {
         if (event.target.value) {
@@ -137,6 +159,21 @@ const StopSearch = ({ clientDb, stops }) => {
         setMapMarkers(filteredStops)
     }
 
+    const login = (username, password) => {
+        clientDb
+            .mutate({
+                mutation: LOGIN,
+                variables: { username, password },
+            })
+            .then((result) => {
+                const newToken = result.data.login.value
+                localStorage.setItem('jumptonext-user-token', newToken)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     return (
         <div className="container">
             <div className="bg-white pl-3 pr-3 pb-1">
@@ -147,15 +184,7 @@ const StopSearch = ({ clientDb, stops }) => {
                     form={form}
                     setForm={setForm}
                 />
-                {
-                    <LoginForm
-                        clientDb={clientDb}
-                        user={user}
-                        setUser={setUser}
-                        form={form}
-                        setForm={setForm}
-                    />
-                }
+                {<LoginForm form={form} login={login} />}
                 {
                     <div>
                         <StopMap
