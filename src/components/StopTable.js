@@ -44,11 +44,12 @@ const Next = ({
 
 const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
     const nextToView = nexttimes
+        .map((o) => o)
         .sort()
         .filter(
             (next) =>
                 next.realtimeDeparture &&
-                next.realtimeDeparture > currentTimestamp
+                next.realtimeDeparture > currentTimestamp,
         )
 
     return (
@@ -75,7 +76,7 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
                         timeLeftString={timeLeftString(
                             currentTimestamp,
                             next.realtimeDeparture,
-                            next.realtime
+                            next.realtime,
                         )}
                         headsign={next.headsign}
                         transportColor={transportColor}

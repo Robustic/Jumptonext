@@ -44,6 +44,7 @@ const StopsTableRowsNexts = ({
     transportColor,
 }) => {
     const nextToView = nextstops
+        .map((o) => o)
         .sort()
         .filter(
             (next) =>

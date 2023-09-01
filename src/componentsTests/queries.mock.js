@@ -335,3 +335,13 @@ export const mock_NEXTS_6150221 = {
         }
     },
 }
+
+export const mock_NEXTS_1310105 = {
+    request: {
+        query: NEXTS,
+        variables: {
+            idToSearch: 'HSL:1310105',
+        },
+    },
+    error: new Error('Error, NEXTS query returns error.'),
+}

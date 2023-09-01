@@ -1,14 +1,16 @@
 import React from 'react'
-import { MockedProvider } from ''
-import { render, fireEvent } from '@testing-library/react'
+import { MockedProvider } from '@apollo/client/testing'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import wait from 'waait'
-import StopSearch from '../components/StopSearch'
+import Main from '../components/Main'
 
 import {
     mock_ALL_STOPS,
     mock_NEXTS_1310602,
     mock_NEXTS_6150221,
     mock_NEXTS_1310109,
+    mock_NEXTS_1310105,
 } from './queries.mock'
 
 describe('Search is working properly', () => {
@@ -16,6 +18,8 @@ describe('Search is working properly', () => {
     const timeHEL = 1579790109347 // 2020-01-23T14:35:09+00:00
     const timeUTC = timeHEL - 2 * 3600000
     MockDate.set(timeUTC)
+
+    const user = userEvent.setup()
 
     let component
     let container
@@ -30,11 +34,14 @@ describe('Search is working properly', () => {
                     mock_NEXTS_1310602,
                     mock_NEXTS_6150221,
                     mock_NEXTS_1310109,
+                    mock_NEXTS_1310105,
+                    mock_NEXTS_1310105,
+                    mock_NEXTS_1310105,
                 ]}
                 addTypename={false}
             >
-                <StopSearch />
-            </MockedProvider>
+                <Main />
+            </MockedProvider>,
         )
         container = component.container
         queryByText = component.queryByText
@@ -44,19 +51,17 @@ describe('Search is working properly', () => {
     test('Search is working properly', async () => {
         const { getByPlaceholderText } = component
         expect(container).toHaveTextContent('Loading...')
-
-        await wait(0)
-        expect(container).toHaveTextContent(
-            'Line code, Line name, Estimated time left'
-        )
+        await wait(10)
 
         const input = getByPlaceholderText(
-            'Example: -Vallilan varikko-, -3024-, -E4114-...'
+            "Example: 'Vallilan varikko', '3024', 'E4114'...",
         )
 
-        fireEvent.change(input, { target: { value: 'l' } })
-        await wait(0)
+        await user.type(input, 'l')
 
+        expect(container).toHaveTextContent(
+            'Line code, Line name, Estimated time left',
+        )
         expect(container).toHaveTextContent('Error, NEXTS query returns error.')
         expect(container).toHaveTextContent('Lauttasaaren kirkko')
         expect(container).toHaveTextContent('Lauttasaari')
@@ -65,11 +70,11 @@ describe('Search is working properly', () => {
 
         expect(container).toHaveTextContent('Louhosmäki')
 
-        fireEvent.change(input, { target: { value: 'lo' } })
-        await wait(0)
+        await user.clear(input)
+        await user.type(input, 'lo')
 
         expect(
-            queryByText('Error, NEXTS query returns error.')
+            queryByText('Error, NEXTS query returns error.'),
         ).not.toBeInTheDocument()
         expect(queryByText('Lauttasaari')).not.toBeInTheDocument()
         expect(queryByText('43m 3s')).not.toBeInTheDocument()
@@ -80,33 +85,32 @@ describe('Search is working properly', () => {
         expect(container).toHaveTextContent('1h 12m 5s')
         expect(queryByText('(1h 12m 5s)')).not.toBeInTheDocument()
 
-        fireEvent.change(input, { target: { value: 'l' } })
-        await wait(0)
+        await user.clear(input)
+        await user.type(input, 'l')
 
         expect(container).toHaveTextContent('Lauttasaaren kirkko')
-        fireEvent.click(getByText('Ki1521'))
+        await user.click(getByText('Ki1521'))
 
-        await wait(0)
         expect(queryByText('Lauttasaari')).not.toBeInTheDocument()
         expect(queryByText('43m 3s')).not.toBeInTheDocument()
-
-        // component.debug()
     })
 
     test('From Stop view return to the general view works', async () => {
         const { getByPlaceholderText } = component
-        await wait(0)
+        await wait(10)
+
         const input = getByPlaceholderText(
-            'Example: -Vallilan varikko-, -3024-, -E4114-...'
+            "Example: 'Vallilan varikko', '3024', 'E4114'...",
         )
-        fireEvent.change(input, { target: { value: 'l' } })
-        await wait(0)
-        fireEvent.click(getByText('Ki1521'))
-        await wait(0)
+
+        await user.type(input, 'l')
+        await user.click(getByText('Ki1521'))
+
         expect(container).toHaveTextContent('Louhosmäki')
         expect(queryByText('Lauttasaari')).not.toBeInTheDocument()
-        fireEvent.click(getByText('Reselect stop'))
-        await wait(0)
+
+        await user.click(getByText('Reselect stop'))
+
         expect(container).toHaveTextContent('Louhosmäki')
         expect(container).toHaveTextContent('Lauttasaari')
     })
