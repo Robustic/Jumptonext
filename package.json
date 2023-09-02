@@ -6,8 +6,11 @@
     "license": "MIT",
     "scripts": {
         "start": "node server.js",
-        "try": "react-dotenv && react-scripts start",
+        "try": "react-dotenv && REACT_APP_USE_DB=dev react-scripts start",
+        "dev": "react-dotenv && REACT_APP_USE_DB=test react-scripts start",
+        "cypress:open": "cypress open",
         "build": "npm install && react-scripts build --prod",
+        "test:e2e": "cypress run",
         "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
         "coverage": "set CI=true && react-scripts test --watchAll --coverage --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
         "eject": "react-scripts eject"
@@ -50,7 +53,7 @@
         "@testing-library/jest-dom": "^6.1.2",
         "@testing-library/react": "^14.0.0",
         "@testing-library/user-event": "^14.4.3",
-        "cypress": "^12.17.3",
+        "cypress": "^12.17.4",
         "prettier": "3.0.2",
         "waait": "^1.0.5"
     }

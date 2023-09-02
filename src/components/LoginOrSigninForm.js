@@ -26,6 +26,7 @@ const LoginOrSigninForm = ({ form, login, formText }) => {
                 </b>
                 <Form.Group>
                     <InputGroup
+                        id="username"
                         style={{ paddingTop: 10, paddingBottom: 10 }}
                         value={username}
                         onChange={({ target }) => setUsername(target.value)}
@@ -33,6 +34,7 @@ const LoginOrSigninForm = ({ form, login, formText }) => {
                         <Form.Control type="text" placeholder="Username" />
                     </InputGroup>
                     <InputGroup
+                        id="password"
                         style={{ paddingBottom: 10 }}
                         value={password}
                         onChange={({ target }) => setPassword(target.value)}
@@ -40,6 +42,7 @@ const LoginOrSigninForm = ({ form, login, formText }) => {
                         <Form.Control type="password" placeholder="Password" />
                     </InputGroup>
                     <Button
+                        id="login-create-account-button"
                         type="submit"
                         style={{
                             width: '100%',

@@ -19,8 +19,17 @@ const authLinkDb = setContext((_, { headers }) => {
     }
 })
 
+const dbUri =
+    process.env.REACT_APP_USE_DB === 'test'
+        ? process.env.REACT_APP_TEST_DB_URL
+        : process.env.REACT_APP_PRODUCTION_DB_URL
+
+const dtUri = process.env.REACT_APP_DIGITR_URL
+
+const subText = process.env.REACT_APP_SUB
+
 const httpLinkDb = createHttpLink({
-    uri: 'https://jumptonext-backend.onrender.com',
+    uri: dbUri,
 })
 
 const clientDatabase = new ApolloClient({
@@ -34,16 +43,17 @@ const giveclientDigitransfer = async () => {
         fetchPolicy: 'network-only',
     })
     const authLinkDt = setContext((_, { headers }) => {
-        return {
+        const newHeaders = {
             headers: {
                 ...headers,
-                'digitransit-subscription-key': response.data.sub.sub,
             },
         }
+        newHeaders.headers[subText] = response.data.sub.sub
+        return newHeaders
     })
 
     const httpLinkDt = createHttpLink({
-        uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+        uri: dtUri,
     })
 
     return new ApolloClient({
