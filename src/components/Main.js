@@ -129,20 +129,22 @@ const StopSearch = ({ clientDb, stops }) => {
             : []
 
     useEffect(() => {
-        clientDb
-            .query({ query: GET_ME, fetchPolicy: 'network-only' })
-            .then((result) => {
-                setForm('main')
-                setUser(result.data.me)
-            })
-            .catch((error) => {
-                return (
-                    <p>
-                        Error, GET_ME query returns error. Check your network
-                        connection status: {error}
-                    </p>
-                )
-            })
+        if (clientDb) {
+            clientDb
+                .query({ query: GET_ME, fetchPolicy: 'network-only' })
+                .then((result) => {
+                    setForm('main')
+                    setUser(result.data.me)
+                })
+                .catch((error) => {
+                    return (
+                        <p>
+                            Error, GET_ME query returns error. Check your
+                            network connection status: {error}
+                        </p>
+                    )
+                })
+        }
     }, [token])
 
     const handleFindStopChange = (event) => {
@@ -215,6 +217,7 @@ const StopSearch = ({ clientDb, stops }) => {
     }
 
     const logout = () => {
+        console.log('taalla *******************')
         setUser(null)
         localStorage.clear()
         clientDb.resetStore()
@@ -244,8 +247,7 @@ const StopSearch = ({ clientDb, stops }) => {
                 variables: { newFavouriteStop },
             })
             .then((result) => {
-                user.favouriteStops =
-                    result.data.addFavouriteStop.favouriteStops
+                setUser(result.data.addFavouriteStop)
             })
             .catch((error) => {
                 console.log(error)
@@ -259,8 +261,7 @@ const StopSearch = ({ clientDb, stops }) => {
                 variables: { favouriteStopToRemove },
             })
             .then((result) => {
-                user.favouriteStops =
-                    result.data.removeFavouriteStop.favouriteStops
+                setUser(result.data.removeFavouriteStop)
             })
             .catch((error) => {
                 console.log(error)

@@ -42,7 +42,11 @@ const LoginOrSigninForm = ({ form, login, formText }) => {
                         <Form.Control type="password" placeholder="Password" />
                     </InputGroup>
                     <Button
-                        id="login-create-account-button"
+                        id={
+                            formText === 'Login'
+                                ? 'login-button'
+                                : 'create-account-button'
+                        }
                         type="submit"
                         style={{
                             width: '100%',

@@ -6,7 +6,7 @@
 # Ignore artifacts:
 build
 coverage
-cypress
+
 
 # Ignore all HTML files:
 **/*.html
