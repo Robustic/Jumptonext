@@ -1,15 +1,22 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
+import { useDispatch, useSelector } from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
-import { NEXTS } from '../queries/queries'
+
+import {
+    NEXTS,
+    ADD_TO_FAVOURITES,
+    REMOVE_FROM_FAVOURITES,
+} from '../queries/queries'
 import {
     timeLeftString,
     getTransportColor,
     getTransportType,
 } from './functions'
+import { setUser } from '../reducers/userReducer'
 
 const Next = ({
     routeShortName,
@@ -92,13 +99,18 @@ const StopTable = ({
     gtfsId,
     clearStopFunction,
     currentTimestamp,
-    addToFavourites,
-    removeFromFavourites,
+    clientDb,
 }) => {
+    const dispatch = useDispatch()
+
+    const user = useSelector(({ user }) => user)
+    const selectedStop = useSelector(({ stops }) => stops.selectedStop)
+
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
         pollInterval: 10000,
     })
+
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, NEXTS query returns error.</p>
     const transportType = getTransportType(data.stop.vehicleType)
@@ -113,12 +125,43 @@ const StopTable = ({
         fontWeight: 'bold',
     }
 
+    const addToFavourites = (newFavouriteStop) => {
+        clientDb
+            .mutate({
+                mutation: ADD_TO_FAVOURITES,
+                variables: { newFavouriteStop },
+            })
+            .then((result) => {
+                dispatch(setUser(result.data.addFavouriteStop))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const removeFromFavourites = (favouriteStopToRemove) => {
+        clientDb
+            .mutate({
+                mutation: REMOVE_FROM_FAVOURITES,
+                variables: { favouriteStopToRemove },
+            })
+            .then((result) => {
+                dispatch(setUser(result.data.removeFavouriteStop))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const inFavourites = user
+        ? user.favouriteStops.includes(String(selectedStop))
+        : false
+
     const AddToFavourites = ({
         addToFavourites,
         removeFromFavourites,
         gtfsId,
     }) => {
-        console.lo
         if (addToFavourites) {
             return (
                 <Button
@@ -158,8 +201,12 @@ const StopTable = ({
                                 Reselect stop
                             </Button>
                             <AddToFavourites
-                                addToFavourites={addToFavourites}
-                                removeFromFavourites={removeFromFavourites}
+                                addToFavourites={
+                                    user && !inFavourites && addToFavourites
+                                }
+                                removeFromFavourites={
+                                    user && inFavourites && removeFromFavourites
+                                }
                                 gtfsId={data.stop.gtfsId}
                             />
                         </td>

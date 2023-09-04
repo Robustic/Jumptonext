@@ -5,11 +5,14 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 import { NEXTS } from '../queries/queries'
+import { useDispatch, useSelector } from 'react-redux'
+
 import {
     timeLeftString,
     getTransportColor,
     getTransportButtonStyle,
 } from './functions'
+import { setViewCenterCoordinates } from '../reducers/stopReducer'
 
 const StopsTableRowsNext = ({
     routeShortName,
@@ -71,14 +74,21 @@ const StopsTableRowsNexts = ({
     )
 }
 
-const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
+const StopsTableRows = ({ name, code, gtfsId, currentTimestamp }) => {
+    const dispatch = useDispatch()
+
     const { loading, error, data } = useQuery(NEXTS, {
         variables: { idToSearch: gtfsId },
         pollInterval: 10000,
     })
 
     const setStopFunction = () => {
-        setStop(gtfsId, data.stop.lat, data.stop.lon)
+        dispatch(
+            setViewCenterCoordinates({
+                selectedStop: gtfsId,
+                bounds: { x: data.stop.lat, y: data.stop.lon },
+            }),
+        )
     }
 
     if (loading)
@@ -122,10 +132,11 @@ const StopsTableRows = ({ name, code, gtfsId, setStop, currentTimestamp }) => {
     )
 }
 
-const StopsTable = ({ findStop, setStop, currentTimestamp }) => {
-    if (findStop.length === 0) {
+const StopsTable = ({ stopsToShowInTable, currentTimestamp }) => {
+    if (stopsToShowInTable.length === 0) {
         return <></>
     }
+
     return (
         <Table bordered size="sm">
             <thead>
@@ -142,13 +153,12 @@ const StopsTable = ({ findStop, setStop, currentTimestamp }) => {
                 </tr>
             </thead>
             <tbody>
-                {findStop.map((stop) => (
+                {stopsToShowInTable.map((stop) => (
                     <StopsTableRows
                         key={stop.gtfsId}
                         name={stop.name}
                         code={stop.code}
                         gtfsId={stop.gtfsId}
-                        setStop={setStop}
                         currentTimestamp={currentTimestamp}
                     />
                 ))}

@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MockedProvider } from '@apollo/client/testing'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import wait from 'waait'
 import Main from '../components/Main'
+import { Provider } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
+import store from '../store'
+import { clearAllButInitialStops } from '../reducers/stopReducer'
 
 import {
     mock_ALL_STOPS,
@@ -26,22 +31,34 @@ describe('Search is working properly', () => {
     let queryByText
     let getByText
 
+    const CleanedMain = () => {
+        const dispatch = useDispatch()
+
+        useEffect(() => {
+            dispatch(clearAllButInitialStops())
+        }, [])
+
+        return <Main />
+    }
+
     beforeEach(() => {
         component = render(
-            <MockedProvider
-                mocks={[
-                    mock_ALL_STOPS,
-                    mock_NEXTS_1310602,
-                    mock_NEXTS_6150221,
-                    mock_NEXTS_1310109,
-                    mock_NEXTS_1310105,
-                    mock_NEXTS_1310105,
-                    mock_NEXTS_1310105,
-                ]}
-                addTypename={false}
-            >
-                <Main />
-            </MockedProvider>,
+            <Provider store={store}>
+                <MockedProvider
+                    mocks={[
+                        mock_ALL_STOPS,
+                        mock_NEXTS_1310602,
+                        mock_NEXTS_6150221,
+                        mock_NEXTS_1310109,
+                        mock_NEXTS_1310105,
+                        mock_NEXTS_1310105,
+                        mock_NEXTS_1310105,
+                    ]}
+                    addTypename={false}
+                >
+                    <CleanedMain />
+                </MockedProvider>
+            </Provider>,
         )
         container = component.container
         queryByText = component.queryByText
@@ -97,6 +114,7 @@ describe('Search is working properly', () => {
 
     test('From Stop view return to the general view works', async () => {
         const { getByPlaceholderText } = component
+        expect(container).toHaveTextContent('Loading...')
         await wait(10)
 
         const input = getByPlaceholderText(

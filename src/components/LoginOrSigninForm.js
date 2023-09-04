@@ -1,17 +1,13 @@
 import { useState } from 'react'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 
-const LoginOrSigninForm = ({ form, login, formText }) => {
+const LoginOrSigninForm = ({ actionOnSubmit, formText }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    if (form !== formText) {
-        return <></>
-    }
-
     const submit = async (event) => {
         event.preventDefault()
-        login(username, password)
+        actionOnSubmit(username, password)
     }
 
     return (

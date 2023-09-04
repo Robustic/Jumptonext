@@ -1,15 +1,18 @@
-import { Button, Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Menu = ({
-    clientDb,
-    user,
-    setUser,
-    form,
-    setForm,
-    logout,
-    setFindStop,
-    setSelectedStop,
-}) => {
+import { setForm } from '../reducers/formReducer'
+import {
+    stopSearchStringChanged,
+    clearAllButInitialStops,
+} from '../reducers/stopReducer'
+
+const Menu = ({ logout, setSelectedStop }) => {
+    const dispatch = useDispatch()
+
+    const user = useSelector(({ user }) => user)
+    const form = useSelector(({ form }) => form)
+
     const login = () => {
         if (user) {
             return null
@@ -25,7 +28,7 @@ const Menu = ({
                             paddingLeft: 10,
                             color: form === 'Login' ? 'yellow' : 'white',
                         }}
-                        onClick={() => setForm('Login')}
+                        onClick={() => dispatch(setForm('Login'))}
                     >
                         <u
                             style={{
@@ -45,7 +48,7 @@ const Menu = ({
                             color:
                                 form === 'Create account' ? 'yellow' : 'white',
                         }}
-                        onClick={() => setForm('Create account')}
+                        onClick={() => dispatch(setForm('Create account'))}
                     >
                         <u
                             style={{
@@ -76,8 +79,8 @@ const Menu = ({
                             color: form === 'favourites' ? 'yellow' : 'white',
                         }}
                         onClick={() => {
-                            setSelectedStop(null)
-                            setForm('favourites')
+                            dispatch(clearAllButInitialStops())
+                            dispatch(setForm('favourites'))
                         }}
                     >
                         <u
@@ -97,7 +100,10 @@ const Menu = ({
                             paddingLeft: 10,
                             color: 'white',
                         }}
-                        onClick={logout}
+                        onClick={() => {
+                            dispatch(clearAllButInitialStops())
+                            logout
+                        }}
                     >
                         <u
                             style={{
@@ -176,9 +182,8 @@ const Menu = ({
                                     color: form === 'main' ? 'yellow' : 'white',
                                 }}
                                 onClick={() => {
-                                    setSelectedStop(null)
-                                    setFindStop([])
-                                    setForm('main')
+                                    dispatch(clearAllButInitialStops())
+                                    dispatch(setForm('main'))
                                 }}
                             >
                                 <u

@@ -1,16 +1,35 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import MapMarker from './MapMarker'
+import { useDispatch, useSelector } from 'react-redux'
 
-const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
+import MapMarker from './MapMarker'
+import { mapBoundsChanged } from '../reducers/stopReducer'
+
+const StopMap = ({ mapMarkers }) => {
+    const dispatch = useDispatch()
+
+    const { x, y } = useSelector(({ stops }) => stops.viewCenterCoordinates)
+
     const [map, setMap] = useState(null)
-    const [x, y] = center
+
+    const simplifyBounds = (bounds) => {
+        return {
+            _southWest: {
+                lat: bounds._southWest.lat,
+                lng: bounds._southWest.lng,
+            },
+            _northEast: {
+                lat: bounds._northEast.lat,
+                lng: bounds._northEast.lng,
+            },
+        }
+    }
 
     const onMove = useCallback(() => {
         if (map) {
-            mapBoundsChanged(map.getBounds())
+            dispatch(mapBoundsChanged(simplifyBounds(map.getBounds())))
         }
-    }, [map, mapBoundsChanged])
+    }, [map])
 
     useEffect(() => {
         if (map) {
@@ -29,7 +48,7 @@ const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
 
     useEffect(() => {
         if (map) {
-            mapBoundsChanged(map.getBounds())
+            dispatch(mapBoundsChanged(simplifyBounds(map.getBounds())))
         }
     }, [map])
 
@@ -37,7 +56,7 @@ const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
         () => (
             <MapContainer
                 ref={setMap}
-                center={center}
+                center={[x, y]}
                 minZoom={10}
                 zoom={17}
                 maxZoom={19}
@@ -54,20 +73,12 @@ const StopMap = ({ center, mapBoundsChanged, mapMarkers, setStop, form }) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {mapMarkers.map((marker) => (
-                    <MapMarker
-                        marker={marker}
-                        setStop={setStop}
-                        key={marker.gtfsId}
-                    />
+                    <MapMarker marker={marker} key={marker.gtfsId} />
                 ))}
             </MapContainer>
         ),
-        [center, mapMarkers, setStop],
+        [x, y, mapMarkers],
     )
-
-    if (form !== 'main' && form != 'favourites') {
-        return <></>
-    }
 
     return <div>{displayMap}</div>
 }

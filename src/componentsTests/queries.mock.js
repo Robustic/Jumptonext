@@ -1,4 +1,4 @@
-import { ALL_STOPS, NEXTS, GET_ME } from '../queries/queries'
+import { ALL_STOPS, NEXTS } from '../queries/queries'
 
 export const mock_ALL_STOPS = {
     request: {
@@ -344,17 +344,4 @@ export const mock_NEXTS_1310105 = {
         },
     },
     error: new Error('Error, NEXTS query returns error.'),
-}
-
-export const mock_GET_ME = {
-    request: {
-        query: GET_ME,
-    },
-    result: () => {
-        return {
-            data: {
-                me: null,
-            },
-        }
-    },
 }

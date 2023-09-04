@@ -1,10 +1,19 @@
 import React from 'react'
 import { Marker } from 'react-leaflet'
-import { stopIcon } from './StopIcon'
+import { useDispatch } from 'react-redux'
 
-const MapMarker = ({ marker, setStop }) => {
+import { stopIcon } from './StopIcon'
+import { setViewCenterCoordinates } from '../reducers/stopReducer'
+
+const MapMarker = ({ marker }) => {
+    const dispatch = useDispatch()
     const handleMarkerClicked = (event) => {
-        setStop(marker.gtfsId, marker.lat, marker.lon)
+        dispatch(
+            setViewCenterCoordinates({
+                selectedStop: marker.gtfsId,
+                bounds: { x: marker.lat, y: marker.lon },
+            }),
+        )
     }
 
     return (

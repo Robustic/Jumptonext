@@ -4,34 +4,43 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Image from 'react-bootstrap/Image'
+import { useDispatch, useSelector } from 'react-redux'
 import '../index.css'
 
 import StopMap from './StopMap'
-import {
-    ALL_STOPS,
-    LOGIN,
-    CREATE_ACCOUNT,
-    GET_ME,
-    ADD_TO_FAVOURITES,
-    REMOVE_FROM_FAVOURITES,
-} from '../queries/queries'
+import { ALL_STOPS, LOGIN, CREATE_ACCOUNT, GET_ME } from '../queries/queries'
 import pic from '../pictures/logo192.png'
 import StopsTable from './StopsTable'
 import StopTable from './StopTable'
 import LoginOrSigninForm from './LoginOrSigninForm'
 import Menu from './Menu'
 import { timestamp } from './functions'
+import {
+    setStops,
+    stopSearchStringChanged,
+    setSelectedStop,
+} from '../reducers/stopReducer'
+import { setUser } from '../reducers/userReducer'
+import { setForm } from '../reducers/formReducer'
 
-const Search = ({ form, findStopForm, handleFindStopChange }) => {
-    if (form !== 'main') {
-        return <></>
+const Search = () => {
+    const dispatch = useDispatch()
+    const stopSearchString = useSelector(({ stops }) => stops.stopSearchString)
+
+    const handleFindStopChange = (event) => {
+        if (event.target.value) {
+            dispatch(stopSearchStringChanged(event.target.value))
+        } else if (event.target.value === '') {
+            dispatch(stopSearchStringChanged())
+        }
     }
+
     return (
         <Form>
             <Form.Group>
                 <InputGroup
                     style={{ paddingBottom: 10 }}
-                    value={findStopForm}
+                    value={stopSearchString}
                     onChange={handleFindStopChange}
                 >
                     <InputGroup.Text>Search</InputGroup.Text>
@@ -45,33 +54,13 @@ const Search = ({ form, findStopForm, handleFindStopChange }) => {
     )
 }
 
-const SelectTable = ({
-    selectedStop,
-    setStop,
-    currentTimestamp,
-    findStopForm,
-    handleFindStopChange,
-    findStop,
-    form,
-    user,
-    showFavourites = false,
-    addToFavourites,
-    removeFromFavourites,
-}) => {
-    if (
-        (form !== 'main' && form !== 'favourites') ||
-        (form === 'main' && showFavourites) ||
-        (form === 'favourites' && !showFavourites)
-    ) {
-        return <></>
-    }
+const SelectTable = ({ currentTimestamp, stopsToShowInTable, clientDb }) => {
+    const dispatch = useDispatch()
+    const selectedStop = useSelector(({ stops }) => stops.selectedStop)
 
     if (selectedStop && selectedStop != '') {
-        const inFavourites = user
-            ? user.favouriteStops.includes(String(selectedStop))
-            : false
         const clearStopFunction = () => {
-            setStop()
+            dispatch(setSelectedStop())
         }
         return (
             <div>
@@ -80,10 +69,7 @@ const SelectTable = ({
                     gtfsId={selectedStop}
                     clearStopFunction={clearStopFunction}
                     currentTimestamp={currentTimestamp}
-                    addToFavourites={user && !inFavourites && addToFavourites}
-                    removeFromFavourites={
-                        user && inFavourites && removeFromFavourites
-                    }
+                    clientDb={clientDb}
                 />
             </div>
         )
@@ -91,50 +77,51 @@ const SelectTable = ({
 
     return (
         <div className="pt-3">
-            <Search
-                form={form}
-                findStopForm={findStopForm}
-                handleFindStopChange={handleFindStopChange}
-            />
+            <Search />
             <StopsTable
-                findStop={findStop}
-                setStop={setStop}
+                stopsToShowInTable={stopsToShowInTable}
                 currentTimestamp={currentTimestamp}
             />
         </div>
     )
 }
 
-const StopSearch = ({ clientDb, stops }) => {
-    const [form, setForm] = useState('main')
+const Main = ({ clientDb }) => {
+    const dispatch = useDispatch()
+    const { data, loading, error } = useQuery(ALL_STOPS)
 
-    const [user, setUser] = useState(null)
+    const user = useSelector(({ user }) => user)
+    const form = useSelector(({ form }) => form)
+    const filteredStops = useSelector(({ stops }) => stops.filteredStops)
+    const stopsInsideMapBounds = useSelector(
+        ({ stops }) => stops.stopsInsideMapBounds,
+    )
 
-    const [findStopForm, setFindStopForm] = useState()
-    const [findStop, setFindStop] = useState([])
-    const [selectedStop, setSelectedStop] = useState()
-
-    const [x, setX] = useState(60.171298)
-    const [y, setY] = useState(24.941671)
-
-    const [mapMarkers, setMapMarkers] = useState([])
+    const [currentTimestamp, setcurrentTimestamp] = useState(timestamp())
+    setTimeout(() => setcurrentTimestamp(timestamp()), 1000)
 
     const token = localStorage.getItem('jumptonext-user-token')
         ? localStorage.getItem('jumptonext-user-token')
         : null
 
+    const allStops = data ? data.stops : []
+
     const favouriteStops =
-        stops && user
-            ? stops.filter((s) => user.favouriteStops.includes(s.gtfsId))
+        allStops && user
+            ? allStops.filter((s) => user.favouriteStops.includes(s.gtfsId))
             : []
+
+    useEffect(() => {
+        dispatch(setStops(allStops))
+    }, [allStops])
 
     useEffect(() => {
         if (clientDb) {
             clientDb
                 .query({ query: GET_ME, fetchPolicy: 'network-only' })
                 .then((result) => {
-                    setForm('main')
-                    setUser(result.data.me)
+                    dispatch(setForm('main'))
+                    dispatch(setUser(result.data.me))
                 })
                 .catch((error) => {
                     return (
@@ -146,199 +133,6 @@ const StopSearch = ({ clientDb, stops }) => {
                 })
         }
     }, [token])
-
-    const handleFindStopChange = (event) => {
-        if (event.target.value) {
-            const written = event.target.value
-            const str = written.toLowerCase()
-            const filteredStops = stops
-                .filter(
-                    (stop) =>
-                        stop.name.toLowerCase().includes(str) ||
-                        (stop.code && stop.code.toLowerCase().includes(str)),
-                )
-                .sort((a, b) => {
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
-                    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
-                    return 0
-                })
-                .filter((i, index) => index < 10)
-            setFindStop(filteredStops)
-            setFindStopForm(written)
-        } else {
-            setFindStop([])
-            setFindStopForm()
-        }
-    }
-
-    const setStop = (stopId, newx, newy) => {
-        if (stopId && newx && newy) {
-            setX(newx)
-            setY(newy)
-        }
-        setSelectedStop(stopId)
-        if (!stopId) {
-        }
-    }
-
-    const [currentTimestamp, setcurrentTimestamp] = useState(timestamp())
-    setTimeout(() => setcurrentTimestamp(timestamp()), 1000)
-
-    const mapBoundsChanged = (bounds) => {
-        const swLat = bounds._southWest.lat
-        const swLng = bounds._southWest.lng
-        const neLat = bounds._northEast.lat
-        const neLng = bounds._northEast.lng
-        const filteredStops = stops
-            .filter(
-                (stop) =>
-                    swLat < stop.lat &&
-                    stop.lat < neLat &&
-                    swLng < stop.lon &&
-                    stop.lon < neLng,
-            )
-            .filter((i, index) => index < 100)
-        setMapMarkers(filteredStops)
-    }
-
-    const login = (username, password) => {
-        clientDb
-            .mutate({
-                mutation: LOGIN,
-                variables: { username, password },
-            })
-            .then((result) => {
-                const newToken = result.data.login.value
-                localStorage.setItem('jumptonext-user-token', newToken)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    const logout = () => {
-        console.log('taalla *******************')
-        setUser(null)
-        localStorage.clear()
-        clientDb.resetStore()
-        setForm('main')
-        setSelectedStop(null)
-        setFindStop([])
-    }
-
-    const createAccount = (username, password) => {
-        clientDb
-            .mutate({
-                mutation: CREATE_ACCOUNT,
-                variables: { username, password },
-            })
-            .then((result) => {
-                setForm('Login')
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    const addToFavourites = (newFavouriteStop) => {
-        clientDb
-            .mutate({
-                mutation: ADD_TO_FAVOURITES,
-                variables: { newFavouriteStop },
-            })
-            .then((result) => {
-                setUser(result.data.addFavouriteStop)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    const removeFromFavourites = (favouriteStopToRemove) => {
-        clientDb
-            .mutate({
-                mutation: REMOVE_FROM_FAVOURITES,
-                variables: { favouriteStopToRemove },
-            })
-            .then((result) => {
-                setUser(result.data.removeFavouriteStop)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    return (
-        <div className="container">
-            <div className="bg-white pl-3 pr-3 pb-1">
-                <Menu
-                    clientDb={clientDb}
-                    user={user}
-                    setUser={setUser}
-                    form={form}
-                    setForm={setForm}
-                    logout={logout}
-                    setFindStop={setFindStop}
-                    setSelectedStop={setSelectedStop}
-                />
-                {
-                    <LoginOrSigninForm
-                        form={form}
-                        login={login}
-                        formText={'Login'}
-                    />
-                }
-                {
-                    <LoginOrSigninForm
-                        form={form}
-                        login={createAccount}
-                        formText={'Create account'}
-                    />
-                }
-                {
-                    <div>
-                        <StopMap
-                            center={[x, y]}
-                            mapBoundsChanged={mapBoundsChanged}
-                            mapMarkers={mapMarkers}
-                            setStop={setStop}
-                            form={form}
-                        />
-                        <SelectTable
-                            user={user}
-                            selectedStop={selectedStop}
-                            setStop={setStop}
-                            currentTimestamp={currentTimestamp}
-                            findStopForm={findStopForm}
-                            handleFindStopChange={handleFindStopChange}
-                            findStop={findStop}
-                            form={form}
-                            showFavourites={false}
-                            addToFavourites={addToFavourites}
-                            removeFromFavourites={removeFromFavourites}
-                        />
-                        <SelectTable
-                            user={user}
-                            selectedStop={selectedStop}
-                            setStop={setStop}
-                            currentTimestamp={currentTimestamp}
-                            findStopForm={''}
-                            handleFindStopChange={handleFindStopChange}
-                            findStop={favouriteStops}
-                            form={form}
-                            showFavourites={true}
-                            addToFavourites={addToFavourites}
-                            removeFromFavourites={removeFromFavourites}
-                        />
-                    </div>
-                }
-            </div>
-        </div>
-    )
-}
-
-const Main = ({ clientDb }) => {
-    const { data, loading, error } = useQuery(ALL_STOPS)
 
     if (loading) {
         return (
@@ -363,7 +157,97 @@ const Main = ({ clientDb }) => {
             </p>
         )
 
-    return <StopSearch clientDb={clientDb} stops={data.stops} />
+    const login = (username, password) => {
+        clientDb
+            .mutate({
+                mutation: LOGIN,
+                variables: { username, password },
+            })
+            .then((result) => {
+                const newToken = result.data.login.value
+                localStorage.setItem('jumptonext-user-token', newToken)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const logout = () => {
+        dispatch(setUser(null))
+        localStorage.clear()
+        clientDb.resetStore()
+        dispatch(setForm('main'))
+        dispatch(setSelectedStop(null))
+        dispatch(stopSearchStringChanged())
+    }
+
+    const createAccount = (username, password) => {
+        clientDb
+            .mutate({
+                mutation: CREATE_ACCOUNT,
+                variables: { username, password },
+            })
+            .then((result) => {
+                dispatch(setForm('Login'))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const choiceForm = () => {
+        switch (form) {
+            case 'Login': {
+                return (
+                    <LoginOrSigninForm
+                        actionOnSubmit={login}
+                        formText={'Login'}
+                    />
+                )
+            }
+            case 'Create account': {
+                return (
+                    <LoginOrSigninForm
+                        actionOnSubmit={createAccount}
+                        formText={'Create account'}
+                    />
+                )
+            }
+            case 'main': {
+                return (
+                    <div>
+                        <StopMap mapMarkers={stopsInsideMapBounds} />
+                        <SelectTable
+                            currentTimestamp={currentTimestamp}
+                            stopsToShowInTable={filteredStops}
+                            clientDb={clientDb}
+                        />
+                    </div>
+                )
+            }
+            case 'favourites': {
+                return (
+                    <div>
+                        <StopMap mapMarkers={stopsInsideMapBounds} />
+                        <SelectTable
+                            currentTimestamp={currentTimestamp}
+                            stopsToShowInTable={favouriteStops}
+                            clientDb={clientDb}
+                        />
+                    </div>
+                )
+            }
+        }
+    }
+
+    return (
+        <div className="container">
+            <div className="bg-white pl-3 pr-3 pb-1">
+                <Menu logout={logout} setSelectedStop={setSelectedStop} />
+                {choiceForm()}
+            </div>
+        </div>
+    )
 }
 
 export default Main
