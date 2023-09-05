@@ -81,7 +81,6 @@ const stopSlice = createSlice({
                 ...state,
                 stopSearchString: null,
                 filteredStops: [],
-                stopsInsideMapBounds: [],
                 viewCenterCoordinates: { x: 60.171298, y: 24.941671 },
                 selectedStop: null,
             }

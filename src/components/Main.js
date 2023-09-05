@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useEffect } from 'react'
+import { useApolloClient, useQuery } from '@apollo/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Form from 'react-bootstrap/Form'
-import InputGroup from 'react-bootstrap/InputGroup'
 import Image from 'react-bootstrap/Image'
 import { useDispatch, useSelector } from 'react-redux'
 import '../index.css'
@@ -10,95 +8,25 @@ import '../index.css'
 import StopMap from './StopMap'
 import { ALL_STOPS, LOGIN, CREATE_ACCOUNT, GET_ME } from '../queries/queries'
 import pic from '../pictures/logo192.png'
-import StopsTable from './StopsTable'
-import StopTable from './StopTable'
+import ManyStopsTable from './ManyStopsTable'
+import SearchStop from './SearchStop'
+import SingleStopTable from './SingleStopTable'
 import LoginOrSigninForm from './LoginOrSigninForm'
 import Menu from './Menu'
-import { timestamp } from './functions'
-import {
-    setStops,
-    stopSearchStringChanged,
-    setSelectedStop,
-} from '../reducers/stopReducer'
+import { setStops, clearAllButInitialStops } from '../reducers/stopReducer'
 import { setUser } from '../reducers/userReducer'
 import { setForm } from '../reducers/formReducer'
 
-const Search = () => {
-    const dispatch = useDispatch()
-    const stopSearchString = useSelector(({ stops }) => stops.stopSearchString)
-
-    const handleFindStopChange = (event) => {
-        if (event.target.value) {
-            dispatch(stopSearchStringChanged(event.target.value))
-        } else if (event.target.value === '') {
-            dispatch(stopSearchStringChanged())
-        }
-    }
-
-    return (
-        <Form>
-            <Form.Group>
-                <InputGroup
-                    style={{ paddingBottom: 10 }}
-                    value={stopSearchString}
-                    onChange={handleFindStopChange}
-                >
-                    <InputGroup.Text>Search</InputGroup.Text>
-                    <Form.Control
-                        type="text"
-                        placeholder="Example: 'Vallilan varikko', '3024', 'E4114'..."
-                    />
-                </InputGroup>
-            </Form.Group>
-        </Form>
-    )
-}
-
-const SelectTable = ({ currentTimestamp, stopsToShowInTable, clientDb }) => {
-    const dispatch = useDispatch()
-    const selectedStop = useSelector(({ stops }) => stops.selectedStop)
-
-    if (selectedStop && selectedStop != '') {
-        const clearStopFunction = () => {
-            dispatch(setSelectedStop())
-        }
-        return (
-            <div>
-                <StopTable
-                    key={selectedStop}
-                    gtfsId={selectedStop}
-                    clearStopFunction={clearStopFunction}
-                    currentTimestamp={currentTimestamp}
-                    clientDb={clientDb}
-                />
-            </div>
-        )
-    }
-
-    return (
-        <div className="pt-3">
-            <Search />
-            <StopsTable
-                stopsToShowInTable={stopsToShowInTable}
-                currentTimestamp={currentTimestamp}
-            />
-        </div>
-    )
-}
-
 const Main = ({ clientDb }) => {
     const dispatch = useDispatch()
+    const clientDt = useApolloClient()
+
     const { data, loading, error } = useQuery(ALL_STOPS)
 
     const user = useSelector(({ user }) => user)
     const form = useSelector(({ form }) => form)
     const filteredStops = useSelector(({ stops }) => stops.filteredStops)
-    const stopsInsideMapBounds = useSelector(
-        ({ stops }) => stops.stopsInsideMapBounds,
-    )
-
-    const [currentTimestamp, setcurrentTimestamp] = useState(timestamp())
-    setTimeout(() => setcurrentTimestamp(timestamp()), 1000)
+    const selectedStop = useSelector(({ stops }) => stops.selectedStop)
 
     const token = localStorage.getItem('jumptonext-user-token')
         ? localStorage.getItem('jumptonext-user-token')
@@ -166,6 +94,7 @@ const Main = ({ clientDb }) => {
             .then((result) => {
                 const newToken = result.data.login.value
                 localStorage.setItem('jumptonext-user-token', newToken)
+                dispatch(setForm('main'))
             })
             .catch((error) => {
                 console.log(error)
@@ -175,10 +104,10 @@ const Main = ({ clientDb }) => {
     const logout = () => {
         dispatch(setUser(null))
         localStorage.clear()
+        clientDt.resetStore()
         clientDb.resetStore()
-        dispatch(setForm('main'))
-        dispatch(setSelectedStop(null))
-        dispatch(stopSearchStringChanged())
+        dispatch(dispatch(clearAllButInitialStops()))
+        dispatch(setForm('Login'))
     }
 
     const createAccount = (username, password) => {
@@ -214,26 +143,35 @@ const Main = ({ clientDb }) => {
                 )
             }
             case 'main': {
+                if (selectedStop) {
+                    return (
+                        <div>
+                            <StopMap />
+                            <SingleStopTable clientDb={clientDb} />
+                        </div>
+                    )
+                }
                 return (
                     <div>
-                        <StopMap mapMarkers={stopsInsideMapBounds} />
-                        <SelectTable
-                            currentTimestamp={currentTimestamp}
-                            stopsToShowInTable={filteredStops}
-                            clientDb={clientDb}
-                        />
+                        <StopMap />
+                        <SearchStop />
+                        <ManyStopsTable stopsToShowInTable={filteredStops} />
                     </div>
                 )
             }
             case 'favourites': {
+                if (selectedStop) {
+                    return (
+                        <div>
+                            <StopMap />
+                            <SingleStopTable clientDb={clientDb} />
+                        </div>
+                    )
+                }
                 return (
                     <div>
-                        <StopMap mapMarkers={stopsInsideMapBounds} />
-                        <SelectTable
-                            currentTimestamp={currentTimestamp}
-                            stopsToShowInTable={favouriteStops}
-                            clientDb={clientDb}
-                        />
+                        <StopMap />
+                        <ManyStopsTable stopsToShowInTable={favouriteStops} />
                     </div>
                 )
             }
@@ -242,8 +180,8 @@ const Main = ({ clientDb }) => {
 
     return (
         <div className="container">
-            <div className="bg-white pl-3 pr-3 pb-1">
-                <Menu logout={logout} setSelectedStop={setSelectedStop} />
+            <div className="bg-white pl-3 pr-3 pb-3">
+                <Menu logout={logout} />
                 {choiceForm()}
             </div>
         </div>

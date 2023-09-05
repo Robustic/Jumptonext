@@ -13,6 +13,7 @@ import {
     getTransportButtonStyle,
 } from './functions'
 import { setViewCenterCoordinates } from '../reducers/stopReducer'
+import { setCurrentTimestamp } from '../reducers/timestampReducer'
 
 const StopsTableRowsNext = ({
     routeShortName,
@@ -41,11 +42,14 @@ const StopsTableRowsNext = ({
     )
 }
 
-const StopsTableRowsNexts = ({
-    nextstops,
-    currentTimestamp,
-    transportColor,
-}) => {
+const StopsTableRowsNexts = ({ nextstops, transportColor }) => {
+    const dispatch = useDispatch()
+    setTimeout(() => dispatch(setCurrentTimestamp()), 1000)
+
+    const currentTimestamp = useSelector(
+        ({ currentTimestamp }) => currentTimestamp,
+    )
+
     const nextToView = nextstops
         .map((o) => o)
         .sort()
@@ -74,7 +78,7 @@ const StopsTableRowsNexts = ({
     )
 }
 
-const StopsTableRows = ({ name, code, gtfsId, currentTimestamp }) => {
+const StopsTableRows = ({ name, code, gtfsId }) => {
     const dispatch = useDispatch()
 
     const { loading, error, data } = useQuery(NEXTS, {
@@ -124,7 +128,6 @@ const StopsTableRows = ({ name, code, gtfsId, currentTimestamp }) => {
                 <StopsTableRowsNexts
                     nextstops={data.stop.stoptimesWithoutPatterns}
                     key={data.stop.gtfsId}
-                    currentTimestamp={currentTimestamp}
                     transportColor={transportColor}
                 />
             </td>
@@ -132,39 +135,46 @@ const StopsTableRows = ({ name, code, gtfsId, currentTimestamp }) => {
     )
 }
 
-const StopsTable = ({ stopsToShowInTable, currentTimestamp }) => {
+const ManyStopsTable = ({ stopsToShowInTable }) => {
     if (stopsToShowInTable.length === 0) {
         return <></>
     }
 
     return (
-        <Table bordered size="sm">
-            <thead>
-                <tr>
-                    <th className="tableheaderwithendlinebold" width={'70px'}>
-                        Stop
-                    </th>
-                    <th className="tableheaderwithendlinebold" width={'20%'}>
-                        Stop name
-                    </th>
-                    <th className="tableheaderwithendlinebold">
-                        Line code, Line name, Estimated time left
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {stopsToShowInTable.map((stop) => (
-                    <StopsTableRows
-                        key={stop.gtfsId}
-                        name={stop.name}
-                        code={stop.code}
-                        gtfsId={stop.gtfsId}
-                        currentTimestamp={currentTimestamp}
-                    />
-                ))}
-            </tbody>
-        </Table>
+        <div style={{ paddingTop: 10 }}>
+            <Table bordered size="sm" style={{ marginBottom: 0 }}>
+                <thead>
+                    <tr>
+                        <th
+                            className="tableheaderwithendlinebold"
+                            width={'70px'}
+                        >
+                            Stop
+                        </th>
+                        <th
+                            className="tableheaderwithendlinebold"
+                            width={'20%'}
+                        >
+                            Stop name
+                        </th>
+                        <th className="tableheaderwithendlinebold">
+                            Line code, Line name, Estimated time left
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {stopsToShowInTable.map((stop) => (
+                        <StopsTableRows
+                            key={stop.gtfsId}
+                            name={stop.name}
+                            code={stop.code}
+                            gtfsId={stop.gtfsId}
+                        />
+                    ))}
+                </tbody>
+            </Table>
+        </div>
     )
 }
 
-export default StopsTable
+export default ManyStopsTable

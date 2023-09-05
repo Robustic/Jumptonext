@@ -21,7 +21,7 @@ export function timeleft(timeleft) {
 export function timeLeftString(
     currentTimestamp,
     realtimeDeparture,
-    realtimeBool
+    realtimeBool,
 ) {
     const bracketOpen = realtimeBool === true ? '' : '('
     const bracketClose = realtimeBool === true ? '' : ')'

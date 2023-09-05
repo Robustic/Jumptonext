@@ -17,6 +17,8 @@ import {
     getTransportType,
 } from './functions'
 import { setUser } from '../reducers/userReducer'
+import { setSelectedStop } from '../reducers/stopReducer'
+import { setCurrentTimestamp } from '../reducers/timestampReducer'
 
 const Next = ({
     routeShortName,
@@ -49,7 +51,14 @@ const Next = ({
     )
 }
 
-const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
+const Nexts = ({ nexttimes, transportColor }) => {
+    const dispatch = useDispatch()
+    setTimeout(() => dispatch(setCurrentTimestamp()), 1000)
+
+    const currentTimestamp = useSelector(
+        ({ currentTimestamp }) => currentTimestamp,
+    )
+
     const nextToView = nexttimes
         .map((o) => o)
         .sort()
@@ -60,7 +69,7 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
         )
 
     return (
-        <Table bordered size="sm">
+        <Table bordered size="sm" style={{ marginBottom: 0 }}>
             <thead>
                 <tr>
                     <th className="tableheaderwithendlinebold" width={'70px'}>
@@ -95,24 +104,20 @@ const Nexts = ({ nexttimes, currentTimestamp, transportColor }) => {
     )
 }
 
-const StopTable = ({
-    gtfsId,
-    clearStopFunction,
-    currentTimestamp,
-    clientDb,
-}) => {
+const SingleStopTable = ({ clientDb }) => {
     const dispatch = useDispatch()
 
     const user = useSelector(({ user }) => user)
     const selectedStop = useSelector(({ stops }) => stops.selectedStop)
 
     const { loading, error, data } = useQuery(NEXTS, {
-        variables: { idToSearch: gtfsId },
+        variables: { idToSearch: selectedStop },
         pollInterval: 10000,
     })
 
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, NEXTS query returns error.</p>
+
     const transportType = getTransportType(data.stop.vehicleType)
     const transportColor = getTransportColor(data.stop.vehicleType)
     const transportStyle = {
@@ -160,13 +165,13 @@ const StopTable = ({
     const AddToFavourites = ({
         addToFavourites,
         removeFromFavourites,
-        gtfsId,
+        selectedStop,
     }) => {
         if (addToFavourites) {
             return (
                 <Button
                     variant="success"
-                    onClick={() => addToFavourites(gtfsId)}
+                    onClick={() => addToFavourites(selectedStop)}
                 >
                     Add to favourites
                 </Button>
@@ -176,7 +181,7 @@ const StopTable = ({
             return (
                 <Button
                     variant="danger"
-                    onClick={() => removeFromFavourites(gtfsId)}
+                    onClick={() => removeFromFavourites(selectedStop)}
                 >
                     Remove from favourites
                 </Button>
@@ -186,8 +191,8 @@ const StopTable = ({
     }
 
     return (
-        <>
-            <Table>
+        <div style={{ paddingTop: 10 }}>
+            <Table style={{ marginBottom: 10 }}>
                 <tbody>
                     <tr>
                         <td style={transportStyle}>
@@ -196,7 +201,7 @@ const StopTable = ({
                         <td>
                             <Button
                                 variant="primary"
-                                onClick={clearStopFunction}
+                                onClick={() => dispatch(setSelectedStop())}
                             >
                                 Reselect stop
                             </Button>
@@ -207,20 +212,19 @@ const StopTable = ({
                                 removeFromFavourites={
                                     user && inFavourites && removeFromFavourites
                                 }
-                                gtfsId={data.stop.gtfsId}
+                                selectedStop={data.stop.gtfsId}
                             />
                         </td>
                     </tr>
                 </tbody>
             </Table>
             <Nexts
-                key={gtfsId}
+                key={selectedStop}
                 nexttimes={data.stop.stoptimesWithoutPatterns}
-                currentTimestamp={currentTimestamp}
                 transportColor={transportColor}
             />
-        </>
+        </div>
     )
 }
 
-export default StopTable
+export default SingleStopTable

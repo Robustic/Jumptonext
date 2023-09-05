@@ -7,6 +7,8 @@ const LoginOrSigninForm = ({ actionOnSubmit, formText }) => {
 
     const submit = async (event) => {
         event.preventDefault()
+        setUsername('')
+        setPassword('')
         actionOnSubmit(username, password)
     }
 

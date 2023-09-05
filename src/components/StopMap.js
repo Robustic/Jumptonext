@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import MapMarker from './MapMarker'
 import { mapBoundsChanged } from '../reducers/stopReducer'
 
-const StopMap = ({ mapMarkers }) => {
+const StopMap = () => {
     const dispatch = useDispatch()
 
+    const stopsInsideMapBounds = useSelector(
+        ({ stops }) => stops.stopsInsideMapBounds,
+    )
     const { x, y } = useSelector(({ stops }) => stops.viewCenterCoordinates)
 
     const [map, setMap] = useState(null)
@@ -72,12 +75,12 @@ const StopMap = ({ mapMarkers }) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {mapMarkers.map((marker) => (
+                {stopsInsideMapBounds.map((marker) => (
                     <MapMarker marker={marker} key={marker.gtfsId} />
                 ))}
             </MapContainer>
         ),
-        [x, y, mapMarkers],
+        [x, y, stopsInsideMapBounds],
     )
 
     return <div>{displayMap}</div>

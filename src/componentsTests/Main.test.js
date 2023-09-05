@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 
 import store from '../store'
 import { clearAllButInitialStops } from '../reducers/stopReducer'
+import { setCurrentTimestamp } from '../reducers/timestampReducer'
 
 import {
     mock_ALL_STOPS,
@@ -19,10 +20,19 @@ import {
 } from './queries.mock'
 
 describe('Search is working properly', () => {
-    var MockDate = require('mockdate')
-    const timeHEL = 1579790109347 // 2020-01-23T14:35:09+00:00
-    const timeUTC = timeHEL - 2 * 3600000
-    MockDate.set(timeUTC)
+    const CleanedMain = () => {
+        const dispatch = useDispatch()
+
+        useEffect(() => {
+            dispatch(clearAllButInitialStops())
+        }, [])
+
+        useEffect(() => {
+            dispatch(setCurrentTimestamp())
+        }, [])
+
+        return <Main />
+    }
 
     const user = userEvent.setup()
 
@@ -31,15 +41,13 @@ describe('Search is working properly', () => {
     let queryByText
     let getByText
 
-    const CleanedMain = () => {
-        const dispatch = useDispatch()
+    var MockDate = require('mockdate')
 
-        useEffect(() => {
-            dispatch(clearAllButInitialStops())
-        }, [])
-
-        return <Main />
-    }
+    beforeAll(() => {
+        const timeHEL = 1579790109347 // 2020-01-23T14:35:09+00:00
+        const timeUTC = timeHEL - 2 * 3600000
+        MockDate.set(timeUTC)
+    })
 
     beforeEach(() => {
         component = render(
@@ -131,5 +139,9 @@ describe('Search is working properly', () => {
 
         expect(container).toHaveTextContent('Louhosmäki')
         expect(container).toHaveTextContent('Lauttasaari')
+    })
+
+    afterAll(() => {
+        MockDate.reset()
     })
 })
