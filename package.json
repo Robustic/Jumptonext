@@ -5,8 +5,8 @@
     "author": "Juha Malinen",
     "license": "MIT",
     "scripts": {
-        "start": "node server.js",
-        "try": "react-dotenv && REACT_APP_USE_DB=dev react-scripts start",
+        "start": "REACT_APP_USE_DB=prod node server.js",
+        "try": "react-dotenv && REACT_APP_USE_DB=prod react-scripts start",
         "dev": "react-dotenv && REACT_APP_USE_DB=test react-scripts start",
         "cypress:open": "cypress open",
         "build": "npm install && react-scripts build --prod",
