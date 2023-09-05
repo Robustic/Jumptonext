@@ -7,9 +7,12 @@ const userSlice = createSlice({
         setUser(state, action) {
             return action.payload
         },
+        setFavouriteStopsForUser(state, action) {
+            return { ...state, favouriteStops: action.payload.favouriteStops }
+        },
     },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, setFavouriteStopsForUser } = userSlice.actions
 
 export default userSlice.reducer

@@ -16,7 +16,7 @@ import {
     getTransportColor,
     getTransportType,
 } from './functions'
-import { setUser } from '../reducers/userReducer'
+import { setFavouriteStopsForUser } from '../reducers/userReducer'
 import { setSelectedStop } from '../reducers/stopReducer'
 import { setCurrentTimestamp } from '../reducers/timestampReducer'
 
@@ -137,7 +137,7 @@ const SingleStopTable = ({ clientDb }) => {
                 variables: { newFavouriteStop },
             })
             .then((result) => {
-                dispatch(setUser(result.data.addFavouriteStop))
+                dispatch(setFavouriteStopsForUser(result.data.addFavouriteStop))
             })
             .catch((error) => {
                 console.log(error)
@@ -151,7 +151,9 @@ const SingleStopTable = ({ clientDb }) => {
                 variables: { favouriteStopToRemove },
             })
             .then((result) => {
-                dispatch(setUser(result.data.removeFavouriteStop))
+                dispatch(
+                    setFavouriteStopsForUser(result.data.removeFavouriteStop),
+                )
             })
             .catch((error) => {
                 console.log(error)
