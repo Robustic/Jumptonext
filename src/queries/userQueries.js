@@ -35,6 +35,15 @@ export const CREATE_ACCOUNT = gql`
     }
 `
 
+export const REMOVE_ACCOUNT = gql`
+    mutation removeUser($username: String!) {
+        removeUser(username: $username) {
+            id
+            username
+        }
+    }
+`
+
 export const ADD_TO_FAVOURITES = gql`
     mutation addFavouriteStop($newFavouriteStop: String!) {
         addFavouriteStop(newFavouriteStop: $newFavouriteStop) {

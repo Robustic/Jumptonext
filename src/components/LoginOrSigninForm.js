@@ -29,18 +29,21 @@ const LoginOrSigninForm = ({ actionOnSubmit, formText }) => {
                     <InputGroup
                         id="username"
                         style={{ paddingTop: 10, paddingBottom: 10 }}
-                        value={username}
-                        onChange={({ target }) => setUsername(target.value)}
                     >
-                        <Form.Control type="text" placeholder="Username" />
+                        <Form.Control
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={({ target }) => setUsername(target.value)}
+                        />
                     </InputGroup>
-                    <InputGroup
-                        id="password"
-                        style={{ paddingBottom: 10 }}
-                        value={password}
-                        onChange={({ target }) => setPassword(target.value)}
-                    >
-                        <Form.Control type="password" placeholder="Password" />
+                    <InputGroup id="password" style={{ paddingBottom: 10 }}>
+                        <Form.Control
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={({ target }) => setPassword(target.value)}
+                        />
                     </InputGroup>
                     <Button
                         id={

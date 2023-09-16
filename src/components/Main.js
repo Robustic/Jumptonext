@@ -4,17 +4,20 @@ import { useApolloClient } from '@apollo/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../index.css'
 
+import AccountSettingsForm from './AccountSettingsForm'
 import LoginOrSigninForm from './LoginOrSigninForm'
 import ManyStopsTable from './ManyStopsTable'
 import Menu from './Menu'
+import Notification from './Notification'
 import SearchStop from './SearchStop'
 import SingleStopTable from './SingleStopTable'
 import StopMap from './StopMap'
 import { queryStops } from './stopsFunctions'
 import {
-    createLoginFunction,
-    createLogoutFunction,
-    createCreateAccountFunction,
+    loginFunction,
+    logoutFunction,
+    createAccountFunction,
+    removeAccountFunction,
     checkUser,
 } from './userFunctions'
 
@@ -51,7 +54,7 @@ const Main = ({ clientDatabase }) => {
             case 'Login': {
                 return (
                     <LoginOrSigninForm
-                        actionOnSubmit={createLoginFunction(clientDatabase)}
+                        actionOnSubmit={loginFunction(clientDatabase)}
                         formText={'Login'}
                     />
                 )
@@ -59,10 +62,18 @@ const Main = ({ clientDatabase }) => {
             case 'Create account': {
                 return (
                     <LoginOrSigninForm
-                        actionOnSubmit={createCreateAccountFunction(
-                            clientDatabase,
-                        )}
+                        actionOnSubmit={createAccountFunction(clientDatabase)}
                         formText={'Create account'}
+                    />
+                )
+            }
+            case 'account-settings': {
+                return (
+                    <AccountSettingsForm
+                        removeAccount={removeAccountFunction(
+                            clientDatabase,
+                            clientDigitransit,
+                        )}
                     />
                 )
             }
@@ -106,11 +117,9 @@ const Main = ({ clientDatabase }) => {
         <div className="container">
             <div className="bg-white pl-3 pr-3 pb-3">
                 <Menu
-                    logout={createLogoutFunction(
-                        clientDatabase,
-                        clientDigitransit,
-                    )}
+                    logout={logoutFunction(clientDatabase, clientDigitransit)}
                 />
+                <Notification />
                 {choiceForm()}
             </div>
         </div>

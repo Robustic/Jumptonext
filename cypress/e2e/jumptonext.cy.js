@@ -26,8 +26,27 @@ describe('Jumptonext', () => {
         cy.wait(500)
         cy.get('#create-account-button').click()
         cy.wait(500)
+        cy.contains("New account 'test_user_2' created")
 
         cy.filterAllUsersWithUsername({ username: 'test_user_2' }).then(
+            (filteredUsers) => {
+                expect(filteredUsers).to.have.length(1)
+            },
+        )
+    })
+
+    it('account with existing username cannot be created', () => {
+        cy.wait(500)
+        cy.contains('Create account').click()
+        cy.wait(500)
+        cy.get('#username').type('test_user')
+        cy.get('#password').type('test_password_2')
+        cy.wait(500)
+        cy.get('#create-account-button').click()
+        cy.wait(500)
+        cy.contains('Username already exists!')
+
+        cy.filterAllUsersWithUsername({ username: 'test_user' }).then(
             (filteredUsers) => {
                 expect(filteredUsers).to.have.length(1)
             },
@@ -45,12 +64,28 @@ describe('Jumptonext', () => {
         cy.get('#login-button').click()
         cy.wait(500)
 
+        cy.contains('test_user logged in')
         cy.contains('Favourite stops')
         cy.contains('test_user')
         cy.contains('logged in')
         cy.get(
             "input[placeholder=\"Example: 'Vallilan varikko', '3024', 'E4114'...\"]",
         )
+    })
+
+    it('user cannot log in with wrong password', () => {
+        cy.wait(500)
+        cy.get('body').should('not.contain', 'Favourite stops')
+        cy.contains('Login').click()
+        cy.wait(500)
+        cy.get('#username').type('test_user')
+        cy.get('#password').type('test_password_wrong')
+        cy.wait(500)
+        cy.get('#login-button').click()
+        cy.wait(500)
+
+        cy.contains('Wrong username or password!')
+        cy.get('body').should('not.contain', 'Favourite stops')
     })
 
     describe('when logged in', function () {
@@ -69,7 +104,36 @@ describe('Jumptonext', () => {
             cy.get('body').should('not.contain', 'Login')
             cy.contains('Logout').click()
             cy.wait(500)
+            cy.contains('Logged out')
             cy.get('body').should('contain', 'Login')
+        })
+
+        it('user can remove account', () => {
+            cy.filterAllUsersWithUsername({ username: 'test_user' }).then(
+                (filteredUsers) => {
+                    expect(filteredUsers).to.have.length(1)
+                },
+            )
+
+            cy.get('body').should('not.contain', 'Login')
+            cy.contains('Account settings').click()
+            cy.wait(500)
+            cy.get('body').should('not.contain', 'Login')
+            cy.contains('Remove account')
+            cy.get('#remove-account').click()
+            cy.wait(500)
+            cy.get('body').should('not.contain', 'Login')
+            cy.contains('Are you sure to remove current account?')
+            cy.get('#remove-account').click()
+            cy.wait(500)
+            cy.contains("Account 'test_user' removed")
+            cy.get('body').should('contain', 'Login')
+
+            cy.filterAllUsersWithUsername({ username: 'test_user' }).then(
+                (filteredUsers) => {
+                    expect(filteredUsers).to.have.length(0)
+                },
+            )
         })
 
         it('logged user can search stop', () => {

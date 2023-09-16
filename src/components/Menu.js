@@ -82,6 +82,15 @@ const Menu = ({ logout }) => {
                     }}
                     text={'Logout'}
                 />
+                <NavbarItem
+                    currentForm={form}
+                    linkToForm={'account-settings'}
+                    whenClicked={() => {
+                        dispatch(clearAllButInitialStops())
+                        dispatch(setForm('account-settings'))
+                    }}
+                    text={'Account settings'}
+                />
                 <Navbar.Text
                     style={{ display: 'flex', paddingLeft: 10, color: 'white' }}
                 >
