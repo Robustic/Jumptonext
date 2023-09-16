@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { timestamp } from '../components/functions'
+import { timestamp } from '../components/commonFunctions'
 
 const timestampSlice = createSlice({
     name: 'currentTimestamp',

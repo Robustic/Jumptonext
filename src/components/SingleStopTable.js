@@ -6,16 +6,16 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
 
+import { NEXTS } from '../queries/stopQueries'
 import {
-    NEXTS,
     ADD_TO_FAVOURITES,
     REMOVE_FROM_FAVOURITES,
-} from '../queries/queries'
+} from '../queries/userQueries'
 import {
     timeLeftString,
     getTransportColor,
     getTransportType,
-} from './functions'
+} from './commonFunctions'
 import { setFavouriteStopsForUser } from '../reducers/userReducer'
 import { setSelectedStop } from '../reducers/stopReducer'
 import { setCurrentTimestamp } from '../reducers/timestampReducer'
@@ -104,7 +104,7 @@ const Nexts = ({ nexttimes, transportColor }) => {
     )
 }
 
-const SingleStopTable = ({ clientDb }) => {
+const SingleStopTable = ({ clientDatabase }) => {
     const dispatch = useDispatch()
 
     const user = useSelector(({ user }) => user)
@@ -131,7 +131,7 @@ const SingleStopTable = ({ clientDb }) => {
     }
 
     const addToFavourites = (newFavouriteStop) => {
-        clientDb
+        clientDatabase
             .mutate({
                 mutation: ADD_TO_FAVOURITES,
                 variables: { newFavouriteStop },
@@ -145,7 +145,7 @@ const SingleStopTable = ({ clientDb }) => {
     }
 
     const removeFromFavourites = (favouriteStopToRemove) => {
-        clientDb
+        clientDatabase
             .mutate({
                 mutation: REMOVE_FROM_FAVOURITES,
                 variables: { favouriteStopToRemove },

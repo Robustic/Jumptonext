@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { Button, Form, InputGroup } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 
 const LoginOrSigninForm = ({ actionOnSubmit, formText }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    const dispatch = useDispatch()
+
     const submit = async (event) => {
         event.preventDefault()
         setUsername('')
         setPassword('')
-        actionOnSubmit(username, password)
+        actionOnSubmit(username, password, dispatch)
     }
 
     return (

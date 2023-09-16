@@ -4,14 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import '../index.css'
-import { NEXTS } from '../queries/queries'
+import { NEXTS } from '../queries/stopQueries'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
     timeLeftString,
     getTransportColor,
     getTransportButtonStyle,
-} from './functions'
+} from './commonFunctions'
 import { setViewCenterCoordinates } from '../reducers/stopReducer'
 import { setCurrentTimestamp } from '../reducers/timestampReducer'
 

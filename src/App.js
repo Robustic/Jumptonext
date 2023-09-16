@@ -6,7 +6,7 @@ import {
     createHttpLink,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { GET_SUB } from './queries/queries'
+import { GET_SUB } from './queries/userQueries'
 import env from 'react-dotenv'
 
 const authLinkDb = setContext((_, { headers }) => {
@@ -72,7 +72,7 @@ const App = () => {
     return (
         <main>
             <ApolloProvider client={clientDigitransfer}>
-                <Main clientDb={clientDatabase} />
+                <Main clientDatabase={clientDatabase} />
             </ApolloProvider>
         </main>
     )

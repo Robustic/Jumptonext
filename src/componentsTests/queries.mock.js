@@ -1,4 +1,4 @@
-import { ALL_STOPS, NEXTS } from '../queries/queries'
+import { ALL_STOPS, NEXTS } from '../queries/stopQueries'
 
 export const mock_ALL_STOPS = {
     request: {

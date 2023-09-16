@@ -65,6 +65,13 @@ describe('Jumptonext', () => {
             cy.wait(500)
         })
 
+        it('user can logout', () => {
+            cy.get('body').should('not.contain', 'Login')
+            cy.contains('Logout').click()
+            cy.wait(500)
+            cy.get('body').should('contain', 'Login')
+        })
+
         it('logged user can search stop', () => {
             cy.get('body').should('not.contain', 'H2061')
             cy.get(

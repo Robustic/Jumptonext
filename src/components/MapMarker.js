@@ -2,7 +2,7 @@ import React from 'react'
 import { Marker } from 'react-leaflet'
 import { useDispatch } from 'react-redux'
 
-import { stopIcon } from './StopIcon'
+import { stopIcon } from './stopIcon'
 import { setViewCenterCoordinates } from '../reducers/stopReducer'
 
 const MapMarker = ({ marker }) => {

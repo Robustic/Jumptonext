@@ -21,7 +21,7 @@ const NavbarItem = ({ currentForm, linkToForm, whenClicked, text }) => {
                         margin: 'auto',
                     }}
                 >
-                    {text}
+                    <strong>{text}</strong>
                 </u>
             </Navbar.Text>
         </Nav.Item>
@@ -78,7 +78,7 @@ const Menu = ({ logout }) => {
                     linkToForm={'login'}
                     whenClicked={() => {
                         dispatch(clearAllButInitialStops())
-                        logout()
+                        logout(dispatch)
                     }}
                     text={'Logout'}
                 />
