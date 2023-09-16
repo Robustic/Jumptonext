@@ -5,7 +5,7 @@ import {
     getTransportColor,
     getTransportType,
     getTransportButtonStyle,
-} from '../components/functions'
+} from '../components/commonFunctions'
 
 describe('timestamp()', () => {
     test('returns correct stamp', () => {
