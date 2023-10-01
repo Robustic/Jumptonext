@@ -6,6 +6,7 @@ import '../index.css'
 
 import AccountSettingsForm from './AccountSettingsForm'
 import LoginOrSigninForm from './LoginOrSigninForm'
+import Loading from './Loading'
 import ManyStopsTable from './ManyStopsTable'
 import Menu from './Menu'
 import Notification from './Notification'
@@ -43,10 +44,10 @@ const Main = ({ clientDatabase }) => {
     }, [token])
 
     if (loadingMessage) {
-        return loadingMessage
+        return <Loading waitingText={loadingMessage} />
     }
     if (errorMessage) {
-        return errorMessage
+        return <p>{errorMessage}</p>
     }
 
     const choiceForm = () => {

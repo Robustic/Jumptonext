@@ -62,7 +62,7 @@ const StopMap = () => {
                 center={[x, y]}
                 minZoom={10}
                 zoom={17}
-                maxZoom={19}
+                maxZoom={18}
                 attributionControl={true}
                 zoomControl={true}
                 doubleClickZoom={true}

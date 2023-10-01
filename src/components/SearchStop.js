@@ -23,7 +23,7 @@ const SearchStop = () => {
                     value={stopSearchString}
                     onChange={handleFindStopChange}
                 >
-                    <InputGroup.Text>Search</InputGroup.Text>
+                    <InputGroup.Text>Search stop</InputGroup.Text>
                     <Form.Control
                         type="text"
                         placeholder="Example: 'Vallilan varikko', '3024', 'E4114'..."

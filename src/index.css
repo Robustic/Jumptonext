@@ -9,14 +9,8 @@
     display: inline;
     color: green;
 }
-.realtimestylewithendline {
-    color: green;
-}
 .notrealtimestyle {
     display: inline;
-    color: #606060;
-}
-.notrealtimestylewithendline {
     color: #606060;
 }
 .semicolon {

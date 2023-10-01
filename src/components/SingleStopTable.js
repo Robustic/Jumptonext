@@ -34,10 +34,9 @@ const Next = ({
         color: transportColor,
         fontWeight: 'bold',
     }
-    const style =
-        realtime === true
-            ? 'realtimestylewithendline'
-            : 'notrealtimestylewithendline'
+    const styleForTime =
+        realtime === true ? { color: 'green' } : { color: '#606060' }
+
     return (
         <tr>
             <td style={transportStyleBold} width={'50px'}>
@@ -46,7 +45,7 @@ const Next = ({
             <td style={transportStyle} width={'40%'}>
                 {headsign}
             </td>
-            <td className={style}>{timeLeftString}</td>
+            <td style={styleForTime}>{timeLeftString}</td>
         </tr>
     )
 }
@@ -202,12 +201,14 @@ const SingleStopTable = ({ clientDatabase }) => {
                         </td>
                         <td>
                             <Button
+                                style={{ margin: 5 }}
                                 variant="primary"
                                 onClick={() => dispatch(setSelectedStop())}
                             >
                                 Reselect stop
                             </Button>
                             <AddToFavourites
+                                style={{ margin: 5 }}
                                 addToFavourites={
                                     user && !inFavourites && addToFavourites
                                 }

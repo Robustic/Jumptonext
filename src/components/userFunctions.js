@@ -84,26 +84,48 @@ export const removeAccountFunction = (clientDatabase, clientDigitransit) => {
 
 export const createAccountFunction = (clientDatabase) => {
     const createAccount = (username, password, dispatch) => {
-        clientDatabase
-            .mutate({
-                mutation: CREATE_ACCOUNT,
-                variables: { username, password },
-            })
-            .then((result) => {
-                dispatch(
-                    setNotification(
-                        "New account '" + username + "' created",
-                        5,
-                        'success',
-                    ),
-                )
-                dispatch(setForm('Login'))
-            })
-            .catch((error) => {
-                dispatch(
-                    setNotification('Username already exists!', 5, 'danger'),
-                )
-            })
+        if (username.length < 8) {
+            dispatch(
+                setNotification(
+                    'Username have to be at least 8 characters long!',
+                    5,
+                    'danger',
+                ),
+            )
+        } else if (password.length < 10) {
+            dispatch(
+                setNotification(
+                    'Password have to be at least 10 characters long!',
+                    5,
+                    'danger',
+                ),
+            )
+        } else {
+            clientDatabase
+                .mutate({
+                    mutation: CREATE_ACCOUNT,
+                    variables: { username, password },
+                })
+                .then((result) => {
+                    dispatch(
+                        setNotification(
+                            "New account '" + username + "' created",
+                            5,
+                            'success',
+                        ),
+                    )
+                    dispatch(setForm('Login'))
+                })
+                .catch((error) => {
+                    dispatch(
+                        setNotification(
+                            'Username already exists!',
+                            5,
+                            'danger',
+                        ),
+                    )
+                })
+        }
     }
 
     return createAccount

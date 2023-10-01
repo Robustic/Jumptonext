@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
-import Image from 'react-bootstrap/Image'
-import loadingPicture from '../pictures/logo192.png'
 
 import { ALL_STOPS } from '../queries/stopQueries'
 import { setStops } from '../reducers/stopReducer'
@@ -23,27 +21,11 @@ export const queryStops = () => {
             ? allStops.filter((s) => user.favouriteStops.includes(s.gtfsId))
             : []
 
-    const loadingMessage = loading ? (
-        <div className="bg-silver">
-            <div className="flex-container center">
-                <p className="start-view-text">Loading...</p>
-            </div>
-            <div>
-                <Image
-                    className="start-view-image"
-                    src={loadingPicture}
-                    roundedCircle
-                />
-            </div>
-        </div>
-    ) : null
+    const loadingMessage = loading ? 'Loading...' : null
 
-    const errorMessage = error ? (
-        <p>
-            Error, ALL_STOPS query returns error. Check your network connection
-            status.
-        </p>
-    ) : null
+    const errorMessage = error
+        ? 'Error, ALL_STOPS query returns error. Check your network connection status.'
+        : null
 
     return { favouriteStops, loadingMessage, errorMessage }
 }
