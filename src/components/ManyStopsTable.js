@@ -142,22 +142,27 @@ const ManyStopsTable = ({ stopsToShowInTable }) => {
 
     return (
         <div style={{ paddingTop: 10 }}>
-            <Table bordered size="sm" style={{ marginBottom: 0 }}>
+            <Table size="sm" style={{ marginBottom: 0 }}>
                 <thead>
                     <tr>
                         <th
                             className="tableheaderwithendlinebold"
+                            style={{ color: '#404040' }}
                             width={'70px'}
                         >
                             Stop
                         </th>
                         <th
                             className="tableheaderwithendlinebold"
+                            style={{ color: '#404040' }}
                             width={'20%'}
                         >
                             Stop name
                         </th>
-                        <th className="tableheaderwithendlinebold">
+                        <th
+                            className="tableheaderwithendlinebold"
+                            style={{ color: '#404040' }}
+                        >
                             Line code, Line name, Estimated time left
                         </th>
                     </tr>

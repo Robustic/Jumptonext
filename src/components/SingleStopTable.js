@@ -68,16 +68,27 @@ const Nexts = ({ nexttimes, transportColor }) => {
         )
 
     return (
-        <Table bordered size="sm" style={{ marginBottom: 0 }}>
+        <Table size="sm" style={{ marginBottom: 0 }}>
             <thead>
                 <tr>
-                    <th className="tableheaderwithendlinebold" width={'70px'}>
+                    <th
+                        className="tableheaderwithendlinebold"
+                        width={'70px'}
+                        style={{ color: '#404040' }}
+                    >
                         Line
                     </th>
-                    <th className="tableheaderwithendlinebold" width={'40%'}>
+                    <th
+                        className="tableheaderwithendlinebold"
+                        width={'40%'}
+                        style={{ color: '#404040' }}
+                    >
                         Line name
                     </th>
-                    <th className="tableheaderwithendlinebold">
+                    <th
+                        className="tableheaderwithendlinebold"
+                        style={{ color: '#404040' }}
+                    >
                         Estimated time left. Green color for realtime (brackets
                         for scheduled).
                     </th>
@@ -193,7 +204,7 @@ const SingleStopTable = ({ clientDatabase }) => {
 
     return (
         <div style={{ paddingTop: 10 }}>
-            <Table style={{ marginBottom: 10 }}>
+            <Table borderless style={{ marginBottom: 10 }}>
                 <tbody>
                     <tr>
                         <td style={transportStyle}>
