@@ -9,7 +9,7 @@ export const ALL_STOPS = gql`
             lon
             code
             zoneId
-            vehicleType
+            vehicleMode
         }
     }
 `
@@ -23,7 +23,7 @@ export const NEXTS = gql`
             lat
             lon
             zoneId
-            vehicleType
+            vehicleMode
             stoptimesWithoutPatterns {
                 scheduledArrival
                 realtimeArrival

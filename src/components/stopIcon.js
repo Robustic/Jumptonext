@@ -7,15 +7,15 @@ import ferrystop from '../pictures/ferrystop.png'
 
 function getStopIcon(transportType) {
     switch (transportType) {
-        case 3:
+        case 'BUS':
             return busstop
-        case 109:
+        case 'RAIL':
             return trainstop
-        case 0:
+        case 'TRAM':
             return tramstop
-        case 1:
+        case 'SUBWAY':
             return substop
-        case 4:
+        case 'FERRY':
             return ferrystop
         default:
             return ferrystop

@@ -20,7 +20,7 @@ const MapMarker = ({ marker }) => {
         <Marker
             position={[marker.lat, marker.lon]}
             key={marker.gtfsId}
-            icon={stopIcon(marker.vehicleType)}
+            icon={stopIcon(marker.vehicleMode)}
             eventHandlers={{
                 click: handleMarkerClicked,
             }}

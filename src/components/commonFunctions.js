@@ -34,15 +34,15 @@ export function timeLeftString(
 
 export function getTransportColor(transport) {
     switch (transport) {
-        case 3: // bus
+        case 'BUS': // bus
             return '#007AC9'
-        case 109: // train
+        case 'RAIL': // train
             return '#8C54A2'
-        case 0: // tram
+        case 'TRAM': // tram
             return '#00985F'
-        case 1: // subway
+        case 'SUBWAY': // subway
             return '#FF6319'
-        case 4: // ferry
+        case 'FERRY': // ferry
             return '#00B9E4'
         default:
             return '#00B9E4'
@@ -51,15 +51,15 @@ export function getTransportColor(transport) {
 
 export function getTransportType(transport) {
     switch (transport) {
-        case 3:
+        case 'BUS':
             return '(Bus stop)'
-        case 109:
+        case 'RAIL':
             return '(Train station)'
-        case 0:
+        case 'TRAM':
             return '(Tram stop)'
-        case 1:
+        case 'SUBWAY':
             return '(Subway station)'
-        case 4:
+        case 'FERRY':
             return '(Ferry stop)'
         default:
             return '(Ferry stop)'
