@@ -128,8 +128,8 @@ const SingleStopTable = ({ clientDatabase }) => {
     if (loading) return <p>Loading...</p>
     else if (error) return <p>Error, NEXTS query returns error.</p>
 
-    const transportType = getTransportType(data.stop.vehicleType)
-    const transportColor = getTransportColor(data.stop.vehicleType)
+    const transportType = getTransportType(data.stop.vehicleMode)
+    const transportColor = getTransportColor(data.stop.vehicleMode)
     const transportStyle = {
         color: transportColor,
         fontSize: '1.17em',

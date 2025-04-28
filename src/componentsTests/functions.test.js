@@ -58,43 +58,43 @@ describe('timeLeftString()', () => {
 
 describe('getTransportColor()', () => {
     test('getTransportColor(3) returns bus color', () => {
-        expect(getTransportColor(3)).toEqual('#007AC9')
+        expect(getTransportColor('BUS')).toEqual('#007AC9')
     })
     test('getTransportColor(109) returns train color', () => {
-        expect(getTransportColor(109)).toEqual('#8C54A2')
+        expect(getTransportColor('RAIL')).toEqual('#8C54A2')
     })
     test('getTransportColor(0) returns tram color', () => {
-        expect(getTransportColor(0)).toEqual('#00985F')
+        expect(getTransportColor('TRAM')).toEqual('#00985F')
     })
     test('getTransportColor(1) returns subway color', () => {
-        expect(getTransportColor(1)).toEqual('#FF6319')
+        expect(getTransportColor('SUBWAY')).toEqual('#FF6319')
     })
     test('getTransportColor(4) returns ferry color', () => {
-        expect(getTransportColor(4)).toEqual('#00B9E4')
+        expect(getTransportColor('FERRY')).toEqual('#00B9E4')
     })
     test('getTransportColor(999) returns ferry color', () => {
-        expect(getTransportColor(999)).toEqual('#00B9E4')
+        expect(getTransportColor('FERRY')).toEqual('#00B9E4')
     })
 })
 
 describe('getTransportType()', () => {
     test('getTransportType(3) returns bus text', () => {
-        expect(getTransportType(3)).toEqual('(Bus stop)')
+        expect(getTransportType('BUS')).toEqual('(Bus stop)')
     })
     test('getTransportType(109) returns train text', () => {
-        expect(getTransportType(109)).toEqual('(Train station)')
+        expect(getTransportType('RAIL')).toEqual('(Train station)')
     })
     test('getTransportType(0) returns tram text', () => {
-        expect(getTransportType(0)).toEqual('(Tram stop)')
+        expect(getTransportType('TRAM')).toEqual('(Tram stop)')
     })
     test('getTransportType(1) returns subway text', () => {
-        expect(getTransportType(1)).toEqual('(Subway station)')
+        expect(getTransportType('SUBWAY')).toEqual('(Subway station)')
     })
     test('getTransportType(4) returns ferry text', () => {
-        expect(getTransportType(4)).toEqual('(Ferry stop)')
+        expect(getTransportType('FERRY')).toEqual('(Ferry stop)')
     })
     test('getTransportType(999) returns ferry text', () => {
-        expect(getTransportType(999)).toEqual('(Ferry stop)')
+        expect(getTransportType('FERRY')).toEqual('(Ferry stop)')
     })
 })
 

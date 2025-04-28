@@ -15,7 +15,7 @@ export const mock_ALL_STOPS = {
                         lon: 24.35642,
                         code: 'Ki1521',
                         zoneId: 'D',
-                        vehicleType: 3,
+                        vehicleMode: 'BUS',
                     },
                     {
                         gtfsId: 'HSL:1310602',
@@ -24,7 +24,7 @@ export const mock_ALL_STOPS = {
                         lon: 24.8785,
                         code: '0012',
                         zoneId: 'A',
-                        vehicleType: 1,
+                        vehicleMode: 'SUBWAY',
                     },
                     {
                         gtfsId: 'HSL:1310109',
@@ -33,7 +33,7 @@ export const mock_ALL_STOPS = {
                         lon: 24.87228,
                         code: '1029',
                         zoneId: 'A',
-                        vehicleType: 3,
+                        vehicleMode: 'BUS',
                     },
                     {
                         gtfsId: 'HSL:1310105',
@@ -42,7 +42,7 @@ export const mock_ALL_STOPS = {
                         lon: 24.87946,
                         code: '1025',
                         zoneId: 'A',
-                        vehicleType: 3,
+                        vehicleMode: 'BUS',
                     },
                 ],
             },
@@ -67,7 +67,7 @@ export const mock_NEXTS_1310109 = {
                     lat: 60.15817,
                     lon: 24.87228,
                     zoneId: 'A',
-                    vehicleType: 3,
+                    vehicleMode: 'BUS',
                     stoptimesWithoutPatterns: [
                         {
                             scheduledArrival: 55920,
@@ -173,7 +173,7 @@ export const mock_NEXTS_1310602 = {
                     lat: 60.159443,
                     lon: 24.8785,
                     zoneId: 'A',
-                    vehicleType: 1,
+                    vehicleMode: 'SUBWAY',
                     stoptimesWithoutPatterns: [
                         {
                             scheduledArrival: 54840,
@@ -247,7 +247,7 @@ export const mock_NEXTS_6150221 = {
                     lat: 60.20219,
                     lon: 24.35642,
                     zoneId: 'D',
-                    vehicleType: 3,
+                    vehicleMode: 'BUS',
                     stoptimesWithoutPatterns: [
                         {
                             scheduledArrival: 53220,

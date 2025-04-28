@@ -107,11 +107,11 @@ const StopsTableRows = ({ name, code, gtfsId }) => {
                 <td>Error, NEXTS query returns error.</td>
             </tr>
         )
-    const transportColor = getTransportColor(data.stop.vehicleType)
+    const transportColor = getTransportColor(data.stop.vehicleMode)
     const transportStyle = {
         color: transportColor,
     }
-    const transportButtonStyle = getTransportButtonStyle(data.stop.vehicleType)
+    const transportButtonStyle = getTransportButtonStyle(data.stop.vehicleMode)
     return (
         <tr key={gtfsId}>
             <td>

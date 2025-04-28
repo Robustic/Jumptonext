@@ -13,6 +13,7 @@ const NavbarItem = ({ currentForm, linkToForm, whenClicked, text }) => {
                     display: 'flex',
                     paddingLeft: 10,
                     color: currentForm === linkToForm ? 'yellow' : 'white',
+                    cursor: 'pointer',
                 }}
                 onClick={whenClicked}
             >
